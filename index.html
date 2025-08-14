@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Logic SA - Digital Innovation for South African Business</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        
+        /* Modern Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: #475569;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            margin-top: 70px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #764ba2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #764ba2;
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 5rem 2rem;
+            background: var(--light);
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+        
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+        
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .service-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .service-link:hover {
+            gap: 1rem;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        /* Pricing Section */
+        .pricing-section {
+            padding: 5rem 2rem;
+            background: white;
+        }
+        
+        .pricing-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .pricing-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+        
+        .pricing-card.featured::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+        
+        .price-period {
+            font-size: 1rem;
+            color: #64748b;
+        }
+        
+        /* Modern Stats */
+        .stats {
+            padding: 5rem 2rem;
+            background: var(--gradient);
+            color: white;
+        }
+        
+        .stats-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 2rem;
+            background: var(--light);
+        }
+        
+        .testimonial-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: #475569;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 5rem 2rem;
+            background: white;
+        }
+        
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+        
+        .contact-form {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="header-content">
+            <div class="logo">Custom Logic SA</div>
+            <nav>
+                <ul>
+                    <li><a href="#services">Solutions</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Transforming South African Business Through Digital Innovation</h1>
+            <p class="hero-subtitle">Enterprise software solutions designed for the unique needs of South African markets</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">Get Started</a>
+                <a href="#services" class="btn btn-secondary">Explore Solutions</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="section-header">
+            <h2 class="section-title">Our Digital Solutions</h2>
+            <p class="section-subtitle">Purpose-built platforms powering South African businesses</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">⚰️</div>
+                <h3>Funeral Manager</h3>
+                <p>Comprehensive funeral home management system designed for South African funeral parlours</p>
+                <a href="https://funeral-manager.org" class="service-link">Visit funeral-manager.org →</a>
+                
+                <ul class="feature-list">
+                    <li>Complete policy administration & claims processing</li>
+                    <li>Automated compliance with SA regulations</li>
+                    <li>Digital memorial services & obituary publishing</li>
+                    <li>Integrated payment solutions with DebiCheck</li>
+                    <li>Family portal for transparent communication</li>
+                </ul>
+                
+                <div style="background: #f0f9ff; padding: 1rem; border-radius: 10px; margin-top: 1.5rem;">
+                    <strong>Impact:</strong> Reduces claim processing from 5 days to 24 hours
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">💼</div>
+                <h3>JobFinders.site</h3>
+                <p>AI-powered recruitment platform connecting South African talent with opportunities</p>
+                <a href="https://jobfinders.site" class="service-link">Visit jobfinders.site →</a>
+                
+                <ul class="feature-list">
+                    <li>Smart AI matching with 92% accuracy</li>
+                    <li>Automated candidate screening & ranking</li>
+                    <li>Real-time salary benchmarking</li>
+                    <li>ATS-optimized CV builder</li>
+                    <li>Integration with major job boards</li>
+                </ul>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 10px; margin-top: 1.5rem;">
+                    <strong>Impact:</strong> 65% faster time-to-hire for employers
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🏪</div>
+                <h3>Unicenta POS Pro</h3>
+                <p>Enterprise-grade point of sale system for South African retail & hospitality</p>
+                <a href="#pricing" class="service-link">View Pricing →</a>
+                
+                <ul class="feature-list">
+                    <li>Multi-store & warehouse management</li>
+                    <li>SARS VAT-ready with eFiling integration</li>
+                    <li>50+ SA-specific business reports</li>
+                    <li>Works with 200+ payment devices</li>
+                    <li>Offline mode with cloud sync</li>
+                </ul>
+                
+                <div style="background: #fef3c7; padding: 1rem; border-radius: 10px; margin-top: 1.5rem;">
+                    <strong>Impact:</strong> 99.7% inventory accuracy across locations
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
+        <div class="section-header">
+            <h2 class="section-title">Transparent Pricing</h2>
+            <p class="section-subtitle">Solutions that scale with your business</p>
+        </div>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Unicenta POS Starter</h3>
+                <div class="price">R1,999<span class="price-period">/month</span></div>
+                <ul class="feature-list">
+                    <li>Single store license</li>
+                    <li>Up to 3 terminals</li>
+                    <li>Basic reporting</li>
+                    <li>Email support</li>
+                    <li>Monthly updates</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Get Started</a>
+            </div>
+            
+            <div class="pricing-card featured">
+                <h3>Unicenta POS Professional</h3>
+                <div class="price">R4,999<span class="price-period">/month</span></div>
+                <ul class="feature-list">
+                    <li>Up to 5 stores</li>
+                    <li>Unlimited terminals</li>
+                    <li>Advanced analytics</li>
+                    <li>Priority support</li>
+                    <li>API access</li>
+                    <li>Custom integrations</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Get Started</a>
+            </div>
+            
+            <div class="pricing-card">
+                <h3>Unicenta POS Enterprise</h3>
+                <div class="price">Custom</div>
+                <ul class="feature-list">
+                    <li>Unlimited stores</li>
+                    <li>Dedicated account manager</li>
+                    <li>On-site training</li>
+                    <li>Custom development</li>
+                    <li>24/7 phone support</li>
+                    <li>SLA guarantee</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Contact Sales</a>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <p style="color: #64748b;">
+                <strong>Note:</strong> Funeral Manager and JobFinders.site have their own pricing models available on their respective platforms.
+            </p>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div>
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Active Clients</div>
+            </div>
+            <div>
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Users Daily</div>
+            </div>
+            <div>
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime SLA</div>
+            </div>
+            <div>
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Local Support</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="section-header">
+            <h2 class="section-title">Client Success Stories</h2>
+            <p class="section-subtitle">Real results from real South African businesses</p>
+        </div>
+        
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p>"Funeral Manager transformed our operations. We're processing claims 70% faster and our families appreciate the transparency."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">MN</div>
+                    <div>
+                        <strong>Mbali Nkosi</strong><br>
+                        <small>Durban Memorial Services</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <p>"JobFinders helped us fill critical positions in record time. The AI matching is incredibly accurate."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">TM</div>
+                    <div>
+                        <strong>Thabo Molefe</strong><br>
+                        <small>TechCorp SA</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <p>"Unicenta POS unified our 8 stores seamlessly. Real-time inventory tracking has been a game-changer."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">SP</div>
+                    <div>
+                        <strong>Sarah Patel</strong><br>
+                        <small>Urban Retail Group</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="section-header">
+            <h2 class="section-title">Let's Transform Your Business</h2>
+            <p class="section-subtitle">Get in touch with our solutions team</p>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Custom Logic SA (Pty) Ltd</h3>
+                <p><strong>Registration:</strong> 2024/853353/07</p>
+                <p><strong>Email:</strong> info@custom-logic.co.za</p>
+                <p><strong>Phone:</strong> 0861 CUSTOM (287866)</p>
+                <p><strong>WhatsApp:</strong> +27 82 XXX XXXX</p>
+                
+                <div style="margin-top: 2rem;">
+                    <h4>Office Location</h4>
+                    <p>Managa Complex<br>
+                    Shoprite USave Street<br>
+                    Thohoyandou, Limpopo<br>
+                    0950</p>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h4>Support Hours</h4>
+                    <p>Monday - Friday: 8:00 - 17:00 SAST<br>
+                    Emergency Support: 24/7</p>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h3>Request a Consultation</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <select required>
+                            <option value="">Select Solution</option>
+                            <option>Funeral Manager</option>
+                            <option>JobFinders.site</option>
+                            <option>Unicenta POS Pro</option>
+                            <option>Custom Development</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Tell us about your needs" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Custom Logic SA</h4>
+                <p>Digital innovation for South African business success.</p>
+                <p style="margin-top: 1rem;">
+                    <strong>B-BBEE Level 2</strong><br>
+                    <strong>POPIA Compliant</strong>
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Our Solutions</h4>
+                <ul>
+                    <li><a href="https://funeral-manager.org">Funeral Manager</a></li>
+                    <li><a href="https://jobfinders.site">JobFinders.site</a></li>
+                    <li><a href="#pricing">Unicenta POS Pro</a></li>
+                    <li><a href="#contact">Custom Development</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="mailto:info@custom-logic.co.za">Email Us</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 Custom Logic SA (Pty) Ltd. All rights reserved. | Reg: 2024/853353/07</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your inquiry! We will contact you within 24 hours.');
+            this.reset
