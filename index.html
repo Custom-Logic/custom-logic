@@ -745,8 +745,8 @@
                 <h3>Custom Logic SA (Pty) Ltd</h3>
                 <p><strong>Registration:</strong> 2024/853353/07</p>
                 <p><strong>Email:</strong> info@custom-logic.co.za</p>
-                <p><strong>Phone:</strong> 0861 CUSTOM (287866)</p>
-                <p><strong>WhatsApp:</strong> +27 82 XXX XXXX</p>
+                <p><strong>Phone:</strong> +27 81 853 2960</p>
+                <p><strong>WhatsApp:</strong> +27 76 825 5575X</p>
                 
                 <div style="margin-top: 2rem;">
                     <h4>Office Location</h4>
@@ -765,7 +765,7 @@
             
             <div class="contact-form">
                 <h3>Request a Consultation</h3>
-                <form id="contactForm">
+                <form id="contactForm" action="">
                     <div class="form-group">
                         <input type="text" placeholder="Your Name" required>
                     </div>
@@ -840,21 +840,138 @@
             <p>© 2025 Custom Logic SA (Pty) Ltd. All rights reserved. | Reg: 2024/853353/07</p>
         </div>
     </footer>
-
-    <script>
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item h4');
+    faqItems.forEach(item => {
+        item.addEventListener('click', function() {
+            this.parentNode.classList.toggle('active');
+        });
+    });
+    
+    // Industry Filter
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cases = document.querySelectorAll('.case');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            const filter = this.getAttribute('data-industry');
+            
+            // Show/hide cases based on filter
+            cases.forEach(caseItem => {
+                const industries = caseItem.getAttribute('data-industries').split(',');
+                if (filter === 'all' || industries.includes(filter)) {
+                    caseItem.style.display = 'block';
+                } else {
+                    caseItem.style.display = 'none';
                 }
             });
         });
+    });
+    
+    // ROI Calculator
+    const calculateBtn = document.getElementById('calculate');
+    const resultsDiv = document.getElementById('results');
+    const savingsSpan = document.getElementById('savings');
+    const timelineSpan = document.getElementById('timeline');
+    
+    calculateBtn.addEventListener('click', function() {
+        const industry = document.getElementById('industry').value;
+        const employees = document.getElementById('employees').value;
+        
+        if (industry && employees) {
+            // Simple calculation logic
+            let savings = 0;
+            let timeline = 0;
+            
+            switch(industry) {
+                case 'Funeral Services':
+                    savings = employees * 25000;
+                    timeline = 14;
+                    break;
+                case 'Recruitment':
+                    savings = employees * 18000;
+                    timeline = 10;
+                    break;
+                case 'Retail':
+                    savings = employees * 22000;
+                    timeline = 12;
+                    break;
+                case 'Hospitality':
+                    savings = employees * 20000;
+                    timeline = 11;
+                    break;
+                default:
+                    savings = employees * 15000;
+                    timeline = 7;
+            }
+            
+            savingsSpan.textContent = 'R' + savings.toLocaleString();
+            timelineSpan.textContent = timeline + ' days';
+            resultsDiv.classList.remove('hidden');
+        }
+    });
+    
+    // Demo Scheduler
+    const scheduleBtn = document.getElementById('schedule-demo');
+    scheduleBtn.addEventListener('click', function() {
+        const service = document.getElementById('service').value;
+        const date = document.getElementById('demo-date').value;
+        const time = document.getElementById('demo-time').value;
+        
+        if (service && date && time) {
+            alert(`Thank you for scheduling a demo for ${service} on ${date} at ${time}. We will send a confirmation email shortly.`);
+            // Reset form
+            document.getElementById('service').value = '';
+            document.getElementById('demo-date').value = '';
+            document.getElementById('demo-time').value = '';
+        } else {
+            alert('Please fill in all fields to schedule a demo.');
+        }
+    });
+    
+    // Newsletter Form
+    const newsletterForm = document.querySelector('.newsletter form');
+    newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        if (email) {
+            alert(`Thank you for subscribing with email: ${email}`);
+            this.reset();
+        }
+    });
+    
+    // Contact Form
+    const contactForm = document.querySelector('#contactForm');
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(contactForm);
+        fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Thank you for your message. We will contact you shortly.');
+                contactForm.reset();
+            } else {
+                alert('There was an error sending your message. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error sending your message. Please try again later.');
+        });
+    });
+});
+</script>
+</body>
 
-        // Form submission
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your inquiry! We will contact you within 24 hours.');
-            this.reset
+</html>
