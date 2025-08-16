@@ -1049,6 +1049,30 @@
                 font-size: 0.875rem;
             }
         }
+		
+		.more-services-grid {
+			display: none; /* hidden by default */
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 2rem;
+			margin-top: 2rem;
+		}
+
+		.more-services-grid.show {
+			display: grid; /* visible when toggled */
+			animation: fadeInUp 0.5s ease forwards;
+		}
+
+		.more-services-toggle {
+			text-align: center;
+			cursor: pointer;
+			transition: transform 0.3s ease;
+		}
+
+		.more-services-toggle:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+		}
+		
     </style>
 </head>
 <body>
@@ -1144,7 +1168,132 @@
                     <strong>Impact:</strong> 99.7% inventory accuracy across locations
                 </div>
             </div>
+        
+			<!-- More services -->
+			<div class="service-card more-services-toggle" onclick="toggleMoreServices()">
+				<div class="service-icon">➕</div>
+				<h3>More Solutions</h3>
+				<p>Explore additional services like Web Design, ERP, CRM, and Custom Development</p>
+			</div>
+
+			<!-- Hidden extra services grid -->
+<div id="moreServices" class="more-services-grid">
+    <!-- Web Design -->
+    <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <h3>Web Design & Digital Presence</h3>
+        <p>Modern, responsive websites built for mobile-first South African audiences.</p>
+        <ul class="feature-list">
+            <li>SEO & local search optimisation</li>
+            <li>WhatsApp & chat integrations</li>
+            <li>Lightweight hosting with POPIA compliance</li>
+            <li>Google Business Profile setup</li>
+        </ul>
+        <div style="background:#f0f9ff; padding:1rem; border-radius:10px; margin-top:1.5rem;">
+            <strong>Impact:</strong> Boosts visibility & trust for SMEs across SA.
         </div>
+    </div>
+
+    <!-- ERP Systems -->
+    <div class="service-card">
+        <div class="service-icon">⚙️</div>
+        <h3>ERP & Business Automation</h3>
+        <p>Affordable enterprise tools adapted for SA’s unique compliance landscape.</p>
+        <ul class="feature-list">
+            <li>Inventory, payroll, and supply chain modules</li>
+            <li>SARS VAT & eFiling integration</li>
+            <li>Offline-ready for load shedding</li>
+            <li>Role-based dashboards for owners & managers</li>
+        </ul>
+        <div style="background:#fef3c7; padding:1rem; border-radius:10px; margin-top:1.5rem;">
+            <strong>Impact:</strong> Reduces admin by up to 60% with automation.
+        </div>
+    </div>
+
+    <!-- CRM Solutions -->
+    <div class="service-card">
+        <div class="service-icon">📊</div>
+        <h3>CRM & Customer Engagement</h3>
+        <p>Customer-first tools that strengthen loyalty and increase sales.</p>
+        <ul class="feature-list">
+            <li>Lead tracking with WhatsApp & email integration</li>
+            <li>AI-driven customer segmentation</li>
+            <li>PayFast, Ozow & DebiCheck invoicing</li>
+            <li>Custom loyalty programs</li>
+        </ul>
+        <div style="background:#f0fdf4; padding:1rem; border-radius:10px; margin-top:1.5rem;">
+            <strong>Impact:</strong> Improves customer retention by 40%.
+        </div>
+    </div>
+
+    <!-- Custom Development -->
+    <div class="service-card">
+        <div class="service-icon">🛠️</div>
+        <h3>Custom Software Development</h3>
+        <p>Bespoke applications designed to solve unique African business challenges.</p>
+        <ul class="feature-list">
+            <li>ERP, HR, POS, and logistics solutions</li>
+            <li>Integrations with Pastel, QuickBooks, SAP</li>
+            <li>Cloud or hybrid deployments</li>
+            <li>Full POPIA compliance with audit trails</li>
+        </ul>
+        <div style="background:#ede9fe; padding:1rem; border-radius:10px; margin-top:1.5rem;">
+            <strong>Impact:</strong> Tailor-made tools that scale as you grow.
+        </div>
+    </div>
+
+    <!-- AI & Data Solutions -->
+    <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <h3>AI & Data Solutions</h3>
+        <p>Practical, business-ready AI to improve efficiency and decision making.</p>
+        <ul class="feature-list">
+            <li>ATS-optimised CV & job applications</li>
+            <li>WhatsApp chatbots for customer support</li>
+            <li>Predictive sales & inventory analytics</li>
+            <li>Smart reporting for non-technical managers</li>
+        </ul>
+        <div style="background:#f0f9ff; padding:1rem; border-radius:10px; margin-top:1.5rem;">
+            <strong>Impact:</strong> Cuts operational costs by 30% through automation.
+        </div>
+    </div>
+
+    <!-- Security & Compliance -->
+    <div class="service-card">
+        <div class="service-icon">🔒</div>
+        <h3>Security & Compliance</h3>
+        <p>Protecting your business and ensuring legal compliance in South Africa.</p>
+        <ul class="feature-list">
+            <li>POPIA & PAIA compliance checks</li>
+            <li>SSL/TLS encrypted hosting</li>
+            <li>Disaster recovery & backup systems</li>
+            <li>Security monitoring & alerts</li>
+        </ul>
+        <div style="background:#fee2e2; padding:1rem; border-radius:10px; margin-top:1.5rem;">
+            <strong>Impact:</strong> Ensures trust & legal readiness in every deal.
+        </div>
+    </div>
+
+    <!-- Cloud & DevOps -->
+    <div class="service-card">
+        <div class="service-icon">🚀</div>
+        <h3>Cloud & DevOps for SMEs</h3>
+        <p>Affordable cloud setups that work in the realities of SA infrastructure.</p>
+        <ul class="feature-list">
+            <li>Migrate legacy hosting to cloud</li>
+            <li>Hybrid deployments (offline + online)</li>
+            <li>Automated pipelines (CI/CD)</li>
+            <li>Staff training for self-management</li>
+        </ul>
+        <div style="background:#cffafe; padding:1rem; border-radius:10px; margin-top:1.5rem;">
+            <strong>Impact:</strong> Keeps your systems running even during load shedding.
+        </div>
+    </div>
+</div>
+
+		
+		
+		</div>
     </section>
 
     <!-- Pricing Section -->
@@ -2081,6 +2230,12 @@
             content.scrollTop = 0;
         }
     </script>
-	
+	<script>
+		function toggleMoreServices() {
+			const moreServices = document.getElementById('moreServices');
+			moreServices.classList.toggle('show');
+		}
+	</script>
+
 </body>
 </html>
