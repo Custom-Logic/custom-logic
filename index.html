@@ -735,6 +735,279 @@
             border-top: 1px solid rgba(255,255,255,0.1);
             color: rgba(255,255,255,0.5);
         }
+/* Custom Privacy Policy Modal */
+
+    
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        privacy-body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f0f0f;
+            color: #e5e5e5;
+            line-height: 1.6;
+        }
+
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dialog-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dialog {
+            width: 95vw;
+            height: 95vh;
+            max-width: 900px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 1px solid #333;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dialog-overlay.active .dialog {
+            transform: scale(1) translateY(0);
+        }
+
+        .dialog-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .dialog-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+            flex-grow: 1;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #333;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin-left: 16px;
+        }
+
+        .close-button:hover {
+            background: #444;
+            transform: scale(1.05);
+        }
+
+        .dialog-content {
+            flex: 1;
+            padding: 0;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .privacy-content {
+            padding: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .privacy-content h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .last-updated {
+            color: #888;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+
+        .privacy-content h2 {
+            font-size: 24px;
+            margin: 32px 0 16px 0;
+            color: #00d4ff;
+            border-left: 4px solid #00d4ff;
+            padding-left: 16px;
+        }
+
+        .privacy-content h3 {
+            font-size: 20px;
+            margin: 24px 0 12px 0;
+            color: #fff;
+        }
+
+        .privacy-content p {
+            margin-bottom: 16px;
+            color: #ccc;
+            font-size: 16px;
+        }
+
+        .privacy-content ul {
+            margin-left: 24px;
+            margin-bottom: 16px;
+            color: #ccc;
+        }
+
+        .privacy-content li {
+            margin-bottom: 8px;
+            padding-left: 8px;
+        }
+
+        .privacy-contact-info {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .privacy-contact-info h3 {
+            color: #00d4ff;
+            margin-bottom: 16px;
+        }
+
+        .privacy-email-link {
+            color: #00d4ff;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .privacy-email-link:hover {
+            color: #0099cc;
+        }
+
+        .open-button {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+
+        .open-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 212, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .dialog {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .dialog-header {
+                padding: 20px 24px;
+                border-radius: 0;
+            }
+
+            .dialog-title {
+                font-size: 24px;
+            }
+
+            .privacy-content {
+                padding: 24px 20px;
+            }
+
+            .privacy-content h1 {
+                font-size: 28px;
+            }
+
+            .privacy-content h2 {
+                font-size: 20px;
+            }
+
+            .open-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 14px 20px;
+            }
+        }
+
+        /* Screen reader improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus styles for accessibility */
+        .close-button:focus,
+        .open-button:focus {
+            outline: 2px solid #00d4ff;
+            outline-offset: 2px;
+        }
+
+        /* Smooth scrolling for content */
+        .dialog-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .dialog-content::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        .dialog-content::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .dialog-content::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+    		
+		
         
         /* Responsive */
         @media (max-width: 768px) {
@@ -1147,6 +1420,9 @@
             </div>
         </div>
     </div>
+<button class="open-button" onclick="openDialog()" aria-label="Open Privacy Policy">
+        Privacy Policy
+</button>
 
     <!-- Footer -->
     <footer>
@@ -1193,6 +1469,140 @@
             <p>© 2025 Custom Logic SA (Pty) Ltd. All rights reserved. | Reg: 2024/853353/07</p>
         </div>
     </footer>
+	
+
+    <div class="dialog-overlay" id="privacyDialog" role="dialog" aria-labelledby="dialogTitle" aria-modal="true">
+        <div class="dialog">
+            <header class="dialog-header">
+                <h1 class="dialog-title" id="dialogTitle">Privacy Policy</h1>
+                <button class="close-button" onclick="closeDialog()" aria-label="Close Privacy Policy">
+                    ×
+                </button>
+            </header>
+            <div class="dialog-content">
+                <div class="privacy-content">
+                    <h1>Privacy Policy</h1>
+                    <p class="last-updated">Last updated: August 16, 2025</p>
+
+                    <h2>1. Introduction</h2>
+                    <p>Custom Logic SA ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our services, or engage with our contact forms and digital solutions.</p>
+
+                    <h2>2. Information We Collect</h2>
+                    
+                    <h3>2.1 Personal Information</h3>
+                    <p>We may collect personal information that you voluntarily provide, including:</p>
+                    <ul>
+                        <li>Name and contact information (email address, phone number)</li>
+                        <li>Business information and project requirements</li>
+                        <li>Communication preferences</li>
+                        <li>Information submitted through contact forms</li>
+                    </ul>
+
+                    <h3>2.2 Technical Information</h3>
+                    <p>We automatically collect certain technical information:</p>
+                    <ul>
+                        <li>IP address and location data</li>
+                        <li>Browser type, version, and operating system</li>
+                        <li>Device information and screen resolution</li>
+                        <li>Website usage patterns and analytics</li>
+                        <li>Cookies and similar tracking technologies</li>
+                    </ul>
+
+                    <h2>3. How We Use Your Information</h2>
+                    <p>We use your information for the following purposes:</p>
+                    <ul>
+                        <li>Responding to inquiries and providing customer support</li>
+                        <li>Delivering custom software solutions and services</li>
+                        <li>Improving our website and services</li>
+                        <li>Sending project updates and business communications</li>
+                        <li>Complying with legal obligations</li>
+                        <li>Protecting against fraud and security threats</li>
+                    </ul>
+
+                    <h2>4. Data Processing and Storage</h2>
+                    
+                    <h3>4.1 Cloudflare Workers</h3>
+                    <p>Our contact forms and certain services utilize Cloudflare Workers for processing. Data submitted through these forms may be temporarily processed on Cloudflare's edge network before being securely transmitted to our systems.</p>
+
+                    <h3>4.2 Data Retention</h3>
+                    <p>We retain personal information only as long as necessary to fulfill the purposes outlined in this policy or as required by law. Contact form submissions are typically retained for 2 years unless otherwise specified.</p>
+
+                    <h2>5. Data Sharing and Disclosure</h2>
+                    <p>We do not sell, trade, or rent your personal information. We may share information in the following circumstances:</p>
+                    <ul>
+                        <li>With trusted service providers who assist in our operations</li>
+                        <li>When required by law or to protect our rights</li>
+                        <li>In connection with a business transaction (merger, acquisition)</li>
+                        <li>With your explicit consent</li>
+                    </ul>
+
+                    <h2>6. Third-Party Services</h2>
+                    <p>Our website may integrate with third-party services including:</p>
+                    <ul>
+                        <li>Cloudflare (content delivery and security)</li>
+                        <li>Google Analytics (website analytics)</li>
+                        <li>GitHub (code repositories and project management)</li>
+                        <li>Email service providers</li>
+                    </ul>
+                    <p>These services have their own privacy policies, and we encourage you to review them.</p>
+
+                    <h2>7. Security Measures</h2>
+                    <p>We implement appropriate technical and organizational security measures including:</p>
+                    <ul>
+                        <li>SSL/TLS encryption for data transmission</li>
+                        <li>Secure data processing through Cloudflare Workers</li>
+                        <li>Regular security audits and updates</li>
+                        <li>Access controls and authentication mechanisms</li>
+                        <li>Data backup and recovery procedures</li>
+                    </ul>
+
+                    <h2>8. Your Rights</h2>
+                    <p>Under applicable data protection laws, you have the right to:</p>
+                    <ul>
+                        <li>Access your personal information</li>
+                        <li>Correct inaccurate or incomplete data</li>
+                        <li>Request deletion of your data</li>
+                        <li>Restrict or object to processing</li>
+                        <li>Data portability</li>
+                        <li>Withdraw consent (where applicable)</li>
+                    </ul>
+
+                    <h2>9. Cookies Policy</h2>
+                    <p>We use cookies and similar technologies to:</p>
+                    <ul>
+                        <li>Remember your preferences and settings</li>
+                        <li>Analyze website performance and usage</li>
+                        <li>Provide personalized content and advertisements</li>
+                        <li>Ensure website security and functionality</li>
+                    </ul>
+                    <p>You can manage cookie preferences through your browser settings.</p>
+
+                    <h2>10. International Data Transfers</h2>
+                    <p>Your information may be transferred to and processed in countries other than South Africa. We ensure appropriate safeguards are in place, including standard contractual clauses and adequacy decisions where applicable.</p>
+
+                    <h2>11. Children's Privacy</h2>
+                    <p>Our services are not intended for individuals under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware of such collection, we will take steps to delete the information promptly.</p>
+
+                    <h2>12. Changes to This Policy</h2>
+                    <p>We may update this Privacy Policy periodically. Significant changes will be communicated through our website or direct communication. Your continued use of our services after changes constitutes acceptance of the updated policy.</p>
+
+                    <div class="privacy-contact-info">
+                        <h3>Contact Information</h3>
+                        <p>For questions about this Privacy Policy or to exercise your rights, please contact us:</p>
+                        <p><strong>Custom Logic SA</strong></p>
+                        <p>Email: <a href="mailto:privacy@custom-logic.co.za" class="email-link">privacy@custom-logic.co.za</a></p>
+                        <p>Website: <a href="https://custom-logic.co.za" class="email-link">https://custom-logic.co.za</a></p>
+                        <p>Business Address: South Africa</p>
+                        <p>Response Time: We aim to respond to privacy inquiries within 30 days.</p>
+                    </div>
+
+                    <h2>13. Governing Law</h2>
+                    <p>This Privacy Policy is governed by the laws of South Africa, including the Protection of Personal Information Act (POPIA). Any disputes arising from this policy will be subject to the jurisdiction of South African courts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+	
 
     <script>
         // Multi-step form functionality
@@ -1590,5 +2000,75 @@
         // Initialize form
         showStep(1);
     </script>
+	
+    <script>
+        function openDialog() {
+            const dialog = document.getElementById('privacyDialog');
+            dialog.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Focus management for accessibility
+            const closeButton = dialog.querySelector('.close-button');
+            closeButton.focus();
+            
+            // Trap focus within dialog
+            trapFocus(dialog);
+        }
+
+        function closeDialog() {
+            const dialog = document.getElementById('privacyDialog');
+            dialog.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Return focus to open button
+            document.querySelector('.open-button').focus();
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDialog();
+            }
+        });
+
+        // Close on overlay click
+        document.getElementById('privacyDialog').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDialog();
+            }
+        });
+
+        // Focus trap for accessibility
+        function trapFocus(element) {
+            const focusableElements = element.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            element.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            lastElement.focus();
+                            e.preventDefault();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            firstElement.focus();
+                            e.preventDefault();
+                        }
+                    }
+                }
+            });
+        }
+
+        // Smooth scroll to top when dialog opens
+        function scrollToTop() {
+            const content = document.querySelector('.dialog-content');
+            content.scrollTop = 0;
+        }
+    </script>
+	
 </body>
 </html>
