@@ -36,7 +36,7 @@ This project isn’t your average SPA. Here’s what makes it tick:
 Here’s the brain behind the simplicity:
 
 1. **Single-File SPA**
-   - All HTML, CSS, and JS live in one file.
+   - All HTML, CSS, OG:Images, Icons , Social Media Images, and JS live in one file.
    - Interactive sections are powered by vanilla JS.
    - SEO sections pre-rendered to ensure crawlability.
 
@@ -46,17 +46,18 @@ Here’s the brain behind the simplicity:
      - `/robots.txt` → search engine instructions.
      - `/feedback` and `/orders` → handles multi-form submissions.
    - Each submission is validated, processed, and **stored in CSV files on GitHub**.
+   - TODO - We Plan to implement a login onlu pop up admin section for customer management.
 
 3. **GitHub as a Backend**
-   - Workers push data to a dedicated repository branch.
+   - Workers push data to a dedicated private repository branch.
    - Each submission creates a commit, providing **version history and audit trail**.
    - No database server required.
 
 4. **SEO & Metadata**
    - Structured data (JSON-LD) embedded directly in the SPA.
+   - Social Media and OG Images embeded directly in the SPA.
    - Open Graph meta tags included in `<head>` for social previews.
-   - Cloudflare Workers allow dynamic injection of per-section `<title>` and `<meta>` if needed.
-
+   - TODO: Cloudflare Workers allow dynamic injection of per-section `<title>` and `<meta>` if needed.
 ---
 
 ## ⚡ Features
@@ -131,13 +132,9 @@ Custom Logic is a **love letter to minimalism** in web development:
 - Optimized for speed, SEO, and maintainability.  
 
 If you’re a coder who likes **clever, compact, cloud-first architectures**, this project is a playground of ideas.
-
 ---
 
 ## 📜 License
-
 MIT License — go ahead, explore, fork, or remix this single-file marvel.  
-
 ---
-
 **Written by a coder who genuinely enjoys building clever, minimalist, cloud-native apps.**
