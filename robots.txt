@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://custom-logic.co.za/sitemap.xml
