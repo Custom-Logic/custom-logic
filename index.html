@@ -1015,10 +1015,22 @@
                 display: none;
             }
             
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-            
+			.contact-container {
+				display: block;   /* ensures stacking */
+			}
+         
+			.contact-info,
+			.contact-form {
+				min-height: 100vh;   /* fill entire screen height */
+				display: flex;
+				flex-direction: column;
+				justify-content: center;  /* vertically center content */
+				padding: 2rem;            /* ensure spacing */
+			}
+			section.contact {
+				padding: 0; /* remove extra padding so the content really fills screen */
+			}
+			
             .hero h1 {
                 font-size: 2rem;
             }
@@ -1469,11 +1481,10 @@
         </div>
     </footer>
 	
-
     <div class="dialog-overlay" id="privacyDialog" role="dialog" aria-labelledby="dialogTitle" aria-modal="true">
         <div class="dialog">
             <header class="dialog-header">
-                <h1 class="dialog-title" id="dialogTitle">Privacy Policy</h1>
+                <h1 class="dialog-title" id="dialogTitle">Custom Logic - Privacy Policy</h1>
                 <button class="close-button" onclick="closeDialog()" aria-label="Close Privacy Policy">
                     ×
                 </button>
