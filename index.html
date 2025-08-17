@@ -1473,10 +1473,252 @@ body.mobile-menu-open {
     color: #000;
   }
 }
-  .mobile-menu-btn {
+.mobile-menu-btn {
     border: 1px solid;
-  }
 }
+/* AI Nodes Animators */
+    .ai-intro-section {
+        max-width: 1000px;
+        width: 100%;
+        background: linear-gradient(135deg, #f9f7ff 0%, #ffffff 100%);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(100, 65, 165, 0.15);
+        position: relative;
+        border: 1px solid rgba(130, 90, 200, 0.2);
+        margin: 20px auto;
+    }
+    
+    .section-header {
+        text-align: center;
+        padding: 40px 20px 20px;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .section-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        background: linear-gradient(90deg, #8a2be2, #ff7f00);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.2;
+    }
+    
+    .section-header p {
+        font-size: 1.2rem;
+        color: #555;
+        max-width: 600px;
+        margin: 0 auto 30px;
+        line-height: 1.6;
+    }
+    
+    .animation-container {
+        height: 400px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .planet {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, #5a2e9a, #3a1b6a);
+        box-shadow: 0 0 40px rgba(138, 43, 226, 0.3);
+    }
+    
+    .planet::after {
+        content: '';
+        position: absolute;
+        top: 20%;
+        left: 10%;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .planet::before {
+        content: '';
+        position: absolute;
+        bottom: 15%;
+        right: 15%;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .ai-node {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #ff7f00;
+        box-shadow: 0 0 15px rgba(255, 127, 0, 0.8);
+        z-index: 20;
+    }
+    
+    .connection {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(to right, #8a2be2, #ff7f00);
+        transform-origin: 0 0;
+        z-index: 5;
+    }
+    
+    .brain-network {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 15;
+        opacity: 0;
+    }
+    
+    .neuron {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(138, 43, 226, 0.7);
+        box-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+    }
+    
+    .synapse {
+        position: absolute;
+        height: 1px;
+        background: rgba(255, 127, 0, 0.5);
+        transform-origin: 0 0;
+    }
+    
+    .cta-container {
+        text-align: center;
+        padding: 30px 20px;
+        background: rgba(249, 247, 255, 0.7);
+        position: relative;
+        z-index: 10;
+    }
+    
+    .cta-title {
+        font-size: 1.5rem;
+        color: #5a2e9a;
+        margin-bottom: 20px;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .cta-button {
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .primary-cta {
+        background: linear-gradient(90deg, #ff7f00, #ff5500);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 127, 0, 0.3);
+    }
+    
+    .secondary-cta {
+        background: transparent;
+        color: #5a2e9a;
+        border: 2px solid #8a2be2;
+    }
+    
+    .primary-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 127, 0, 0.5);
+    }
+    
+    .secondary-cta:hover {
+        background: rgba(138, 43, 226, 0.1);
+    }
+    
+    .stats {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 15px;
+        padding: 15px 25px;
+        min-width: 160px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, #8a2be2, #ff7f00);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 5px 0;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: #666;
+    }
+    
+    .footer {
+        margin-top: 20px;
+        text-align: center;
+        color: #777;
+        font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+        .section-header h1 {
+            font-size: 2rem;
+        }
+        
+        .animation-container {
+            height: 300px;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stats {
+            gap: 15px;
+        }
+        
+        .stat-card {
+            min-width: 120px;
+            padding: 10px 15px;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+        }
+    }
+
    
 </style>
 </head>
@@ -1527,6 +1769,48 @@ body.mobile-menu-open {
             </div>
         </div>
     </section>
+
+    <section class="ai-intro-section">
+        <div class="section-header">
+            <h1>Intelligent AI Agent Networks</h1>
+            <p>Building cognitive systems that connect users, applications, and data across the globe</p>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value">98.7%</div>
+                    <div class="stat-label">System Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">42ms</div>
+                    <div class="stat-label">Avg. Response Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Global Coverage</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="animation-container">
+            <div class="planet"></div>
+            <div class="brain-network" id="brain-network"></div>
+        </div>
+        
+        <div class="cta-container">
+            <h3 class="cta-title">Transform Your Business with AI Agents</h3>
+            <div class="cta-buttons">
+                <a href="#contact" class="cta-button primary-cta">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    Contact Us
+                </a>
+                <a href="/ai-solutions" class="cta-button secondary-cta">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    Explore Solutions
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section id="services" class="services">
         <div class="section-header">
             <h2 class="section-title">Our Digital Solutions</h2>
@@ -2944,6 +3228,252 @@ body.mobile-menu-open {
 
 		fetchBlogMenu();		
 </script>
-
+   <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(MotionPathPlugin);
+            
+            const container = document.querySelector('.animation-container');
+            const planet = document.querySelector('.planet');
+            const brainNetwork = document.getElementById('brain-network');
+            const planetRect = planet.getBoundingClientRect();
+            const planetCenterX = planetRect.left + planetRect.width/2 - container.getBoundingClientRect().left;
+            const planetCenterY = planetRect.top + planetRect.height/2 - container.getBoundingClientRect().top;
+            const planetRadius = planetRect.width/2;
+            
+            // Create AI nodes
+            const nodes = [];
+            const nodeCount = 8;
+            
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'ai-node';
+                container.appendChild(node);
+                
+                // Position nodes in orbit around the planet
+                const angle = (i / nodeCount) * Math.PI * 2;
+                const orbitRadius = planetRadius + 80 + Math.random() * 40;
+                const x = planetCenterX + Math.cos(angle) * orbitRadius;
+                const y = planetCenterY + Math.sin(angle) * orbitRadius;
+                
+                gsap.set(node, {
+                    x: x - 10,
+                    y: y - 10
+                });
+                
+                nodes.push(node);
+            }
+            
+            // Create connections between nodes
+            const connections = [];
+            
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    if (Math.random() > 0.6) continue; // Randomly skip some connections
+                    
+                    const node1 = nodes[i];
+                    const node2 = nodes[j];
+                    
+                    const rect1 = node1.getBoundingClientRect();
+                    const rect2 = node2.getBoundingClientRect();
+                    
+                    const x1 = rect1.left + rect1.width/2 - container.getBoundingClientRect().left;
+                    const y1 = rect1.top + rect1.height/2 - container.getBoundingClientRect().top;
+                    const x2 = rect2.left + rect2.width/2 - container.getBoundingClientRect().left;
+                    const y2 = rect2.top + rect2.height/2 - container.getBoundingClientRect().top;
+                    
+                    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                    
+                    const connection = document.createElement('div');
+                    connection.className = 'connection';
+                    container.appendChild(connection);
+                    
+                    gsap.set(connection, {
+                        x: x1,
+                        y: y1,
+                        width: 0,
+                        rotation: angle
+                    });
+                    
+                    connections.push({
+                        element: connection,
+                        length: length,
+                        x1: x1,
+                        y1: y1,
+                        x2: x2,
+                        y2: y2
+                    });
+                }
+            }
+            
+            // Create brain-like neural network
+            const neurons = [];
+            const synapses = [];
+            const neuronCount = 30;
+            
+            for (let i = 0; i < neuronCount; i++) {
+                const neuron = document.createElement('div');
+                neuron.className = 'neuron';
+                brainNetwork.appendChild(neuron);
+                
+                // Position neurons around the planet with a brain-like distribution
+                const angle = Math.random() * Math.PI * 2;
+                const distance = planetRadius + 20 + Math.random() * 60;
+                const x = planetCenterX + Math.cos(angle) * distance;
+                const y = planetCenterY + Math.sin(angle) * distance;
+                
+                gsap.set(neuron, {
+                    x: x - 4,
+                    y: y - 4,
+                    opacity: 0
+                });
+                
+                neurons.push(neuron);
+            }
+            
+            // Create synapses between neurons
+            for (let i = 0; i < neurons.length; i++) {
+                for (let j = i + 1; j < neurons.length; j++) {
+                    if (Math.random() > 0.85) continue;
+                    
+                    const neuron1 = neurons[i];
+                    const neuron2 = neurons[j];
+                    
+                    const rect1 = neuron1.getBoundingClientRect();
+                    const rect2 = neuron2.getBoundingClientRect();
+                    
+                    const x1 = rect1.left + rect1.width/2 - container.getBoundingClientRect().left;
+                    const y1 = rect1.top + rect1.height/2 - container.getBoundingClientRect().top;
+                    const x2 = rect2.left + rect2.width/2 - container.getBoundingClientRect().left;
+                    const y2 = rect2.top + rect2.height/2 - container.getBoundingClientRect().top;
+                    
+                    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                    
+                    const synapse = document.createElement('div');
+                    synapse.className = 'synapse';
+                    brainNetwork.appendChild(synapse);
+                    
+                    gsap.set(synapse, {
+                        x: x1,
+                        y: y1,
+                        width: 0,
+                        rotation: angle,
+                        opacity: 0
+                    });
+                    
+                    synapses.push({
+                        element: synapse,
+                        length: length
+                    });
+                }
+            }
+            
+            // Animation timeline
+            const masterTL = gsap.timeline();
+            
+            // Animate nodes appearing
+            masterTL.from(nodes, {
+                duration: 0.5,
+                scale: 0,
+                opacity: 0,
+                stagger: 0.1,
+                ease: "back.out(1.7)"
+            });
+            
+            // Animate connections forming
+            masterTL.to(connections, {
+                duration: 1.5,
+                width: function(index) {
+                    return connections[index].length;
+                },
+                opacity: 1,
+                stagger: 0.05,
+                ease: "power2.out"
+            }, "-=0.5");
+            
+            // Animate brain network appearing
+            masterTL.to(brainNetwork, {
+                opacity: 1,
+                duration: 0.5
+            });
+            
+            masterTL.from(neurons, {
+                duration: 0.5,
+                scale: 0,
+                opacity: 0,
+                stagger: 0.05,
+                ease: "back.out(1.7)"
+            }, "-=0.3");
+            
+            masterTL.to(synapses, {
+                duration: 1,
+                width: function(index) {
+                    return synapses[index].length;
+                },
+                opacity: 1,
+                stagger: 0.02,
+                ease: "power2.out"
+            }, "-=0.5");
+            
+            // Create pulsing effect for nodes
+            nodes.forEach(node => {
+                gsap.to(node, {
+                    duration: 1,
+                    scale: 1.3,
+                    opacity: 0.8,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            });
+            
+            // Create glowing effect for connections
+            connections.forEach(conn => {
+                gsap.to(conn.element, {
+                    duration: 2,
+                    opacity: 0.7,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            });
+            
+            // Create moving particles along connections
+            setInterval(() => {
+                connections.forEach(conn => {
+                    if (Math.random() > 0.7) {
+                        const particle = document.createElement('div');
+                        particle.style.position = 'absolute';
+                        particle.style.width = '6px';
+                        particle.style.height = '6px';
+                        particle.style.borderRadius = '50%';
+                        particle.style.background = '#ff7f00';
+                        particle.style.boxShadow = '0 0 8px rgba(255, 127, 0, 0.8)';
+                        particle.style.zIndex = '10';
+                        container.appendChild(particle);
+                        
+                        const startX = conn.x1;
+                        const startY = conn.y1;
+                        
+                        gsap.set(particle, {
+                            x: startX - 3,
+                            y: startY - 3
+                        });
+                        
+                        gsap.to(particle, {
+                            duration: 1.5,
+                            x: conn.x2 - 3,
+                            y: conn.y2 - 3,
+                            ease: "linear",
+                            onComplete: () => {
+                                container.removeChild(particle);
+                            }
+                        });
+                    }
+                });
+            }, 300);
+        });
+    </script>
 </body>
 </html>
