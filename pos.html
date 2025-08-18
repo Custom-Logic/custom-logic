@@ -19,6 +19,9 @@
     <meta name="twitter:title" content="Custom Logic | SaaS & Digital Solutions">
     <meta name="twitter:description" content="Custom Logic delivers modern software for South Africa — SaaS apps, ERP, CRM, POS, and AI tools.">
     <meta name="twitter:image" content="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYzMCIgdmlld0JveD0iMCAwIDEyMDAgNjMwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMDY2ZjAiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzc2NGJhMiIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8ZmlsdGVyIGlkPSJzaGFkb3ciIHg9Ii0xMDAlIiB5PSItMTAwJSIgd2lkdGg9IjMwMCUiIGhlaWdodD0iMzAwJSI+CiAgICAgIDxmZURyb3BTaGFkb3cgZHg9IjAiIGR5PSI0IiBzdGREZXZpYXRpb249IjYiIGZsb29kLWNvbG9yPSJyZ2JhKDAsMCwwLDAuNykiIC8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPgogIDx0ZXh0IHg9IjYwMCIgeT0iMzAwIiBmb250LXNpemU9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmaWx0ZXI9InVybCgjc2hhZG93KSIgZm9udC13ZWlnaHQ9ImJvbGQiPkN1c3RvbSBMb2dpYzwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjM4MCIgZm9udC1zaXplPSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZmlsdGVyPSJ1cmwoI3NoYWRvdykiIGZvbnQtd2VpZ2h0PSJib2xkIj5BIFNvdW5kIENob2ljZTwvdGV4dD4KICA8dGV4dCB4PSI2MDAiIHk9IjU1MCIgZm9udC1zaXplPSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuOCkiIGZvbnQtd2VpZ2h0PSJib2xkIj5jdXN0b20tbG9naWMuY28uemE8L3RleHQ+Cjwvc3ZnPg==">	  	  
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #0056b3;
@@ -131,23 +134,12 @@
         
         /* Hero Section */
         .hero {
-            margin-top: 70px;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
+            background: linear-gradient(rgba(26, 42, 58, 0.9), rgba(26, 42, 58, 0.8)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3') no-repeat center center/cover;
+            color: var(--white);
+            padding: 120px 0 80px;
+            text-align: center;
         }
         
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            animation: float 20s infinite linear;
-        }
         .hero h1 {
             color: var(--white);
             margin-bottom: 20px;
