@@ -633,21 +633,43 @@
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <div class="header header-container">
+
+        <header>
+        <div class="header-content">
             <div class="logo">
-                <img src="https://custom-logic.co.za/images/logo.png" alt="Custom Logic Logo">
-                <span>CUSTOM LOGIC</span>
-            </div>
+			<a href="https://custom-logic.co.za">Custom Logic SA</a>
+			</div>
             <nav>
                 <ul>
                     <li><a href="#pricing">Pricing</a></li>
                     <li><a href="#hardware">Hardware</a></li>
                     <li><a href="#configure">Get Quote</a></li>
                     <li><a href="#contact">Contact</a></li>
+					<li><a href="https://blog.custom-logic.co.za">Blog</a></li>
                 </ul>
             </nav>
+			<button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open mobile navigation menu" aria-expanded="false" aria-controls="mobileMenuOverlay">
+				<span>Menu</span>
+			</button>
+
         </div>
+			<div class="mobile-menu-overlay" id="mobileMenuOverlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Mobile navigation menu">
+				<div class="mobile-menu-content">
+					<button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile navigation menu">
+						<span aria-hidden="true">×</span>
+						<span class="sr-only">Close</span>
+					</button>
+					<nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+						<ul role="list">
+							<li><a href="#services" role="menuitem">Solutions</a></li>
+							<li><a href="#pricing" role="menuitem">Pricing</a></li>
+							<li><a href="#contact" role="menuitem">Contact</a></li>
+							<li><a href="https://blog.custom-logic.co.za" role="menuitem">Blog</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>			
+
     </header>
 
     <!-- Hero Section -->
