@@ -24,16 +24,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0056b3;
-            --secondary: #1a2a3a;
-            --accent: #ff6b00;
+            /* Updated color system to match "Custom Logic SA" look */
+            --primary: #5b6cff; /* Indigo */
+            --secondary: #0f172a; /* Deep navy for footer */
+            --accent: #ffb020; /* Warm amber accent */
             --light: #f5f9ff;
-            --dark: #1a2a3a;
+            --dark: #111827; /* Near-black for header text */
             --text: #333;
-            --gray: #6c757d;
+            --gray: #6b7280;
             --white: #ffffff;
-            --success: #28a745;
-            --warning: #ffc107;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --brand-gradient: linear-gradient(90deg, #5a7cf8 0%, #7a5cf4 100%);
         }
         
         * {
@@ -84,13 +86,13 @@
         
         /* Header Styles */
         header {
-            background-color: var(--secondary);
-            color: var(--white);
+            background-color: var(--white); /* White app bar */
+            color: var(--dark);
             padding: 15px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
         }
         
         .header-container {
@@ -103,7 +105,7 @@
             display: flex;
             align-items: center;
             font-size: 1.8rem;
-            font-weight: 700;
+            font-weight: 800;
         }
         
         .logo img {
@@ -121,20 +123,32 @@
         }
         
         nav a {
-            color: var(--white);
+            color: var(--dark);
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            font-size: 1.05rem;
         }
         
         nav a:hover {
-            color: var(--accent);
+            color: #7a5cf4; /* Indigo hover */
+        }
+
+        /* Gradient brand text */
+        .logo span {
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 0.3px;
         }
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 42, 58, 0.9), rgba(26, 42, 58, 0.8)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3') no-repeat center center/cover;
+            /* Indigo gradient with subtle dot pattern */
+            background:
+                radial-gradient(circle at 12px 12px, rgba(255,255,255,0.08) 1.2px, transparent 1.2px) 0 0 / 24px 24px,
+                linear-gradient(135deg, #5a7cf8 0%, #7a5cf4 100%);
             color: var(--white);
             padding: 120px 0 80px;
             text-align: center;
@@ -295,6 +309,45 @@
         .pricing-footer {
             padding: 0 30px 30px;
             text-align: center;
+        }
+        
+        /* Benefits Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+        .benefit-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 22px;
+            border: 1px solid #eee;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .benefit-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+        .benefit-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--brand-gradient);
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+        .benefit-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        .benefit-card p {
+            color: var(--gray);
         }
         
         /* Hardware Section */
@@ -499,9 +552,10 @@
         .footer-col h3 {
             color: var(--white);
             margin-bottom: 25px;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             position: relative;
             padding-bottom: 10px;
+            font-weight: 800;
         }
         
         .footer-col h3:after {
@@ -515,9 +569,9 @@
         }
         
         .footer-col p, .footer-col li {
-            color: #ccc;
+            color: #cbd5e1;
             margin-bottom: 15px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             line-height: 1.8;
         }
         
@@ -530,13 +584,13 @@
         }
         
         .footer-col ul li a {
-            color: #ccc;
+            color: #cbd5e1;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
         
         .footer-col ul li a:hover {
-            color: var(--accent);
+            color: var(--white);
         }
         
         .social-links {
@@ -549,13 +603,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
-            height: 45px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             color: var(--white);
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
         }
         
         .social-links a:hover {
@@ -564,12 +618,26 @@
         }
         
         .footer-bottom {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #999;
-            font-size: 1.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            font-size: 0.95rem;
         }
+
+        .privacy-btn {
+            background: linear-gradient(135deg, #22d3ee 0%, #1d4ed8 100%);
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(29,78,216,0.25);
+        }
+        .privacy-btn:hover { filter: brightness(1.05); }
         
         /* Responsive */
         @media (max-width: 992px) {
@@ -632,7 +700,7 @@
         <div class="container header-container">
             <div class="logo">
                 <a href="/">
-                <span>CUSTOM LOGIC</span>
+                <span>Custom Logic SA</span>
                 </a>                
             </div>
             <nav>
@@ -646,6 +714,58 @@
         </div>
     </header>
 
+
+    <!-- Benefits Section -->
+    <section id="benefits">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Use a Point of Sale (POS) System?</h2>
+                <p>A modern POS helps you sell faster, see exactly what is happening across stores, and make better business decisions from reliable data.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Faster Checkout</h3>
+                    <p>Scan items, apply discounts and accept multiple payment methods to serve customers quickly and reduce queues.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-boxes"></i></div>
+                    <h3>Real‑time Inventory</h3>
+                    <p>Track stock across terminals and stores, get low‑stock alerts and prevent out‑of‑stock losses.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Accurate Reporting</h3>
+                    <p>Daily sales, best‑sellers, margins and tax reports give you clear insight to grow revenue and control costs.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-store"></i></div>
+                    <h3>Multi‑store Ready</h3>
+                    <p>Manage multiple shops and terminals with centralized data, pricing and user permissions.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Reduced Shrinkage</h3>
+                    <p>User roles, cash‑up controls and audit trails help prevent errors and fraud at the till.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-gift"></i></div>
+                    <h3>Loyalty & Promotions</h3>
+                    <p>Reward repeat customers and run targeted promotions to increase basket size and repeat visits.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-screwdriver-wrench"></i></div>
+                    <h3>Remote Terminal Management</h3>
+                    <p>Monitor tills nationwide, push software updates and receive alerts for connectivity or disk space issues — no costly on‑site visits.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-globe-africa"></i></div>
+                    <h3>Local Hosting & POPIA</h3>
+                    <p>SA‑based cloud regions, daily backups and data protection aligned to POPIA. Transparent pricing in Rands and local support you can reach.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Pricing Section -->
     <section id="pricing" class="payment-terms">
@@ -862,6 +982,8 @@
         </div>
     </section>
 
+    
+
     <!-- Payment Terms Section -->
     <section class="payment-terms">
         <div class="container">
@@ -890,36 +1012,38 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h3>Custom Logic</h3>
-                    <p>Providing enterprise technology solutions for South African businesses since 2010.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
+                    <h3>Custom Logic SA</h3>
+                    <p>Digital innovation for South African business success.</p>
+                    <p><strong>B-BBEE Level 2</strong><br><strong>POPIA Compliant</strong></p>
                 </div>
                 <div class="footer-col">
-                    <h3>Our Services</h3>
+                    <h3>Our Solutions</h3>
                     <ul>
-                        <li><a href="#">POS Hosting Solutions</a></li>
-                        <li><a href="#">Database Management</a></li>
-                        <li><a href="#">Retail System Integration</a></li>
-                        <li><a href="#">Technical Support</a></li>
+                        <li><a href="#">Funeral Manager</a></li>
+                        <li><a href="#">JobFinders.site</a></li>
+                        <li><a href="#">Unicenta POS Pro</a></li>
+                        <li><a href="#">Custom Development</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h3>Contact Information</h3>
+                    <h3>Company</h3>
                     <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> 123 Tech Park, Sandton, Johannesburg</li>
-                        <li><i class="fas fa-phone"></i> +27 11 123 4567</li>
-                        <li><i class="fas fa-envelope"></i> sales@custom-logic.co.za</li>
-                        <li><i class="fas fa-clock"></i> Mon-Fri: 8:00 AM - 5:00 PM</li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Email Us</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 Custom Logic (Pty) Ltd. All rights reserved. | Reg. No. 2023/123456/07 | VAT No. 4560123456</p>
+                <p>&copy; 2025 Custom Logic SA (Pty) Ltd. All rights reserved. | Reg: 2024/853353/07</p>
+                <button id="privacy-policy-button" class="privacy-btn" data-open="privacy-policy">Privacy Policy</button>
             </div>
         </div>
     </footer>
