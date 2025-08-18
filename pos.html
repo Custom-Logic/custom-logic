@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC-Based POS Hosting | Custom Logic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0056b3;
+            --secondary: #1a2a3a;
+            --accent: #ff6b00;
+            --light: #f5f9ff;
+            --dark: #1a2a3a;
+            --text: #333;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: var(--white);
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 25px;
+        }
+        
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 42, 58, 0.9), rgba(26, 42, 58, 0.8)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3') no-repeat center center/cover;
+            color: var(--white);
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 3.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 14px 35px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            background: #e55a00;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--white);
+            margin-left: 20px;
+        }
+        
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--primary);
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2:after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title p {
+            max-width: 700px;
+            margin: 20px auto 0;
+            font-size: 1.2rem;
+            color: var(--gray);
+        }
+        
+        /* Pricing Section */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+        
+        .pricing-card.popular {
+            border: 2px solid var(--accent);
+            transform: scale(1.03);
+            z-index: 1;
+        }
+        
+        .popular-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: var(--white);
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 4px;
+        }
+        
+        .pricing-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .pricing-name {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+        
+        .pricing-period {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .pricing-features {
+            padding: 30px;
+        }
+        
+        .pricing-features ul {
+            list-style: none;
+        }
+        
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .pricing-features li i {
+            color: var(--success);
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .pricing-footer {
+            padding: 0 30px 30px;
+            text-align: center;
+        }
+        
+        /* Hardware Section */
+        .hardware-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .hardware-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .hardware-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .hardware-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 10px 0;
+        }
+        
+        /* Configuration Section */
+        .configurator {
+            background: linear-gradient(rgba(26, 42, 58, 0.95), rgba(26, 42, 58, 0.95)), url('https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3') no-repeat center center/cover;
+            color: var(--white);
+        }
+        
+        .configurator .section-title h2 {
+            color: var(--white);
+        }
+        
+        .config-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .config-summary {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .summary-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .summary-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .summary-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .summary-total {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 15px;
+            color: var(--accent);
+            text-align: right;
+            border-top: 2px solid rgba(255,255,255,0.2);
+            padding-top: 15px;
+        }
+        
+        .config-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--white);
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group.half {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .submit-container {
+            text-align: center;
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+        
+        /* Payment Terms */
+        .payment-terms {
+            background-color: #f8f9fa;
+        }
+        
+        .terms-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+        }
+        
+        .terms-list {
+            margin: 25px 0;
+            padding-left: 25px;
+        }
+        
+        .terms-list li {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .terms-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 70px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            color: var(--white);
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .footer-col p, .footer-col li {
+            color: #ccc;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-col ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-col ul li a:hover {
+            color: var(--accent);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #999;
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            section {
+                padding: 80px 0;
+            }
+            
+            .hero {
+                padding: 100px 0 60px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 15px;
+                display: block;
+                width: fit-content;
+                margin: 15px auto 0;
+            }
+            
+            section {
+                padding: 70px 0;
+            }
+            
+            .form-group.half {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="https://custom-logic.co.za/images/logo.png" alt="Custom Logic Logo">
+                <span>CUSTOM LOGIC</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#hardware">Hardware</a></li>
+                    <li><a href="#configure">Get Quote</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Professional POS Hosting Solution</h1>
+            <p>Complete point of sale management with custom installation fees, hardware options, and monthly hosting services for South African businesses</p>
+            <div class="hero-buttons">
+                <a href="#configure" class="btn">Get Instant Quote</a>
+                <a href="#pricing" class="btn btn-outline">View Pricing</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="payment-terms">
+        <div class="container">
+            <div class="section-title">
+                <h2>Monthly Hosting Plans</h2>
+                <p>Flexible pricing based on your business size and requirements</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Small Business</div>
+                        <div class="pricing-price">R899</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Up to 2 Terminals</li>
+                            <li><i class="fas fa-check"></i> 20GB Database Storage</li>
+                            <li><i class="fas fa-check"></i> Email & WhatsApp Support</li>
+                            <li><i class="fas fa-check"></i> Daily Backups</li>
+                            <li><i class="fas fa-check"></i> Standard Security</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-tag">POPULAR</div>
+                    <div class="pricing-header">
+                        <div class="pricing-name">Growing Business</div>
+                        <div class="pricing-price">R1,499</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Up to 5 Terminals</li>
+                            <li><i class="fas fa-check"></i> 50GB Database Storage</li>
+                            <li><i class="fas fa-check"></i> Phone & Email Support</li>
+                            <li><i class="fas fa-check"></i> Real-time Backups</li>
+                            <li><i class="fas fa-check"></i> Enhanced Security</li>
+                            <li><i class="fas fa-check"></i> Advanced Reporting</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Enterprise</div>
+                        <div class="pricing-price">R2,299</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Unlimited Terminals</li>
+                            <li><i class="fas fa-check"></i> 100GB+ Storage</li>
+                            <li><i class="fas fa-check"></i> 24/7 Priority Support</li>
+                            <li><i class="fas fa-check"></i> Hourly Backups</li>
+                            <li><i class="fas fa-check"></i> Enterprise Security</li>
+                            <li><i class="fas fa-check"></i> Business Intelligence</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hardware Section -->
+    <section id="hardware" class="payment-terms">
+        <div class="container">
+            <div class="section-title">
+                <h2>Hardware Pricing</h2>
+                <p>Quality PC hardware for your point of sale system</p>
+            </div>
+            
+            <h3 style="text-align: center; margin-bottom: 20px;">Installation Fees</h3>
+            <div class="hardware-grid">
+                <div class="hardware-card">
+                    <div class="hardware-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>Desktop Server</h3>
+                    <p>Office Admin & Local Server</p>
+                    <div class="hardware-price">R2,000</div>
+                    <p>Once-off installation fee</p>
+                </div>
+            </div>
+            
+            <h3 style="text-align: center; margin: 40px 0 20px;">Terminal Hardware</h3>
+            <div class="hardware-grid">
+                <div class="hardware-card">
+                    <div class="hardware-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <h3>Terminal PC</h3>
+                    <p>Per workstation</p>
+                    <div class="hardware-price">R1,500</div>
+                    <p>Once-off purchase</p>
+                </div>
+                <div class="hardware-card">
+                    <div class="hardware-icon">
+                        <i class="fas fa-cash-register"></i>
+                    </div>
+                    <h3>Till System</h3>
+                    <p>Per terminal</p>
+                    <div class="hardware-price">R1,000</div>
+                    <p>Once-off purchase</p>
+                </div>
+                <div class="hardware-card">
+                    <div class="hardware-icon">
+                        <i class="fas fa-barcode"></i>
+                    </div>
+                    <h3>Barcode Scanner</h3>
+                    <p>Per terminal</p>
+                    <div class="hardware-price">R500</div>
+                    <p>Once-off purchase</p>
+                </div>
+                <div class="hardware-card">
+                    <div class="hardware-icon">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <h3>Receipt Printer</h3>
+                    <p>Per terminal</p>
+                    <div class="hardware-price">R2,000</div>
+                    <p>Once-off purchase</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration Section -->
+    <section id="configure" class="configurator">
+        <div class="container">
+            <div class="section-title">
+                <h2>Configure Your System</h2>
+                <p>Get an instant quote based on your requirements</p>
+            </div>
+            <div class="config-container">
+                <div class="config-summary">
+                    <h3>Your Configuration Summary</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">Installation Fee</div>
+                            <div class="summary-value" id="installation-fee">R0</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Hardware Cost</div>
+                            <div class="summary-value" id="hardware-cost">R0</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">Monthly Hosting</div>
+                            <div class="summary-value" id="monthly-fee">R0</div>
+                        </div>
+                    </div>
+                    <div class="summary-total">
+                        Total Initial Cost: <span id="total-initial">R0</span>
+                    </div>
+                </div>
+                
+                <form id="service-config" class="config-form">
+                    <div class="form-group">
+                        <label for="business-name">Business Name *</label>
+                        <input type="text" id="business-name" name="business_name" required placeholder="Enter your business name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-name">Contact Person *</label>
+                        <input type="text" id="contact-name" name="contact_name" required placeholder="Full name">
+                    </div>
+                    
+                    <div class="form-group half">
+                        <div>
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required placeholder="your@email.com">
+                        </div>
+                        <div>
+                            <label for="phone">Phone *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+27 12 345 6789">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">Business Location *</label>
+                        <input type="text" id="location" name="location" required placeholder="City/Town">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shops">Number of Shops/Locations *</label>
+                        <input type="number" id="shops" name="shops" min="1" value="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="terminals">Number of Terminals per Shop *</label>
+                        <input type="number" id="terminals" name="terminals" min="1" value="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="plan">Monthly Hosting Plan *</label>
+                        <select id="plan" name="plan" required>
+                            <option value="899">Small Business (R899/month)</option>
+                            <option value="1499" selected>Growing Business (R1,499/month)</option>
+                            <option value="2299">Enterprise (R2,299/month)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="requirements">Additional Requirements</label>
+                        <textarea id="requirements" name="requirements" placeholder="Tell us about your specific needs..."></textarea>
+                    </div>
+                    
+                    <div class="submit-container">
+                        <button type="submit" class="btn">Request Proposal</button>
+                        <p style="margin-top: 20px; opacity: 0.8;">By submitting, you agree to our <a href="#" style="color: var(--accent);">Terms of Service</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Terms Section -->
+    <section class="payment-terms">
+        <div class="container">
+            <div class="section-title">
+                <h2>Payment Terms</h2>
+                <p>Flexible options to suit your business needs</p>
+            </div>
+            <div class="terms-container">
+                <h3>Our Payment Structure</h3>
+                <ul class="terms-list">
+                    <li><strong>Installation Fee:</strong> R2000 per shop (one-time payment)</li>
+                    <li><strong>Hardware Costs:</strong> All hardware purchased upfront (PCs, tills, scanners, printers)</li>
+                    <li><strong>Monthly Hosting:</strong> Fixed fee based on your selected plan</li>
+                    <li><strong>Payment Methods:</strong> EFT, Credit Card, SnapScan accepted</li>
+                    <li><strong>VAT Included:</strong> All prices include 15% VAT</li>
+                    <li><strong>Setup Process:</strong> Installation begins after payment confirmation</li>
+                    <li><strong>Contract:</strong> Month-to-month with 30-day notice period</li>
+                    <li><strong>Support:</strong> 24/7 technical support included in monthly fee</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Custom Logic</h3>
+                    <p>Providing enterprise technology solutions for South African businesses since 2010.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Our Services</h3>
+                    <ul>
+                        <li><a href="#">POS Hosting Solutions</a></li>
+                        <li><a href="#">Database Management</a></li>
+                        <li><a href="#">Retail System Integration</a></li>
+                        <li><a href="#">Technical Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Information</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Tech Park, Sandton, Johannesburg</li>
+                        <li><i class="fas fa-phone"></i> +27 11 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> sales@custom-logic.co.za</li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 8:00 AM - 5:00 PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Custom Logic (Pty) Ltd. All rights reserved. | Reg. No. 2023/123456/07 | VAT No. 4560123456</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Pricing configuration
+        const PRICES = {
+            installationPerShop: 2000,
+            terminalPC: 1500,
+            till: 1000,
+            scanner: 500,
+            printer: 2000
+        };
+        
+        // DOM Elements
+        const shopsInput = document.getElementById('shops');
+        const terminalsInput = document.getElementById('terminals');
+        const planSelect = document.getElementById('plan');
+        
+        // Summary elements
+        const installationFeeEl = document.getElementById('installation-fee');
+        const hardwareCostEl = document.getElementById('hardware-cost');
+        const monthlyFeeEl = document.getElementById('monthly-fee');
+        const totalInitialEl = document.getElementById('total-initial');
+        
+        // Calculate costs function
+        function calculateCosts() {
+            const shops = parseInt(shopsInput.value) || 0;
+            const terminals = parseInt(terminalsInput.value) || 0;
+            const monthlyPlan = parseFloat(planSelect.value) || 0;
+            
+            // Calculate installation fee (R2000 per shop)
+            const installationFee = PRICES.installationPerShop * shops;
+            
+            // Calculate hardware costs (per terminal)
+            const hardwarePerTerminal = PRICES.terminalPC + PRICES.till + PRICES.scanner + PRICES.printer;
+            const hardwareCost = hardwarePerTerminal * terminals * shops;
+            
+            // Calculate monthly fee
+            const monthlyFee = monthlyPlan * shops;
+            
+            // Calculate total initial cost
+            const totalInitial = installationFee + hardwareCost;
+            
+            // Update UI
+            installationFeeEl.textContent = 'R' + installationFee.toLocaleString();
+            hardwareCostEl.textContent = 'R' + hardwareCost.toLocaleString();
+            monthlyFeeEl.textContent = 'R' + monthlyFee.toLocaleString();
+            totalInitialEl.textContent = 'R' + totalInitial.toLocaleString();
+        }
+        
+        // Add event listeners
+        shopsInput.addEventListener('input', calculateCosts);
+        terminalsInput.addEventListener('input', calculateCosts);
+        planSelect.addEventListener('change', calculateCosts);
+        
+        // Initialize calculations
+        calculateCosts();
+        
+        // Form submission handler
+        document.getElementById('service-config').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Form data
+            const formData = {
+                business_name: document.getElementById('business-name').value,
+                contact_name: document.getElementById('contact-name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                shops: document.getElementById('shops').value,
+                terminals: document.getElementById('terminals').value,
+                plan: document.getElementById('plan').options[planSelect.selectedIndex].text,
+                installation_fee: installationFeeEl.textContent.replace('R', ''),
+                hardware_cost: hardwareCostEl.textContent.replace('R', ''),
+                monthly_fee: monthlyFeeEl.textContent.replace('R', ''),
+                requirements: document.getElementById('requirements').value
+            };
+            
+            // API endpoint
+            const apiUrl = 'https://data-crud.custom-logic.co.za/orders';
+            
+            // Send data to API
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Thank you! Your request has been submitted successfully. Our team will send your proposal within 24 hours.');
+                    document.getElementById('service-config').reset();
+                    calculateCosts();
+                } else {
+                    alert('There was an error submitting your request. Please try again or contact our support team.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your request. Please try again or contact our support team.');
+            });
+        });
+    </script>
+</body>
+</html>
