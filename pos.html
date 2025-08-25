@@ -1146,62 +1146,181 @@
     </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <script>
-        // Pricing configuration
-        const PRICES = {
-            installationPerShop: 2000,
-            terminalPC: 1500,
-            till: 1000,
-            scanner: 500,
-            printer: 2000
-        };
-		// Add this line after the PRICES constant declaration
-		let currentQuotationData = null; // Store quotation data for PDF generation
-        
-        // DOM Elements
-        const shopsInput = document.getElementById('shops');
-        const terminalsInput = document.getElementById('terminals');
-        const planSelect = document.getElementById('plan');
-        
-        // Summary elements
-        const installationFeeEl = document.getElementById('installation-fee');
-        const hardwareCostEl = document.getElementById('hardware-cost');
-        const monthlyFeeEl = document.getElementById('monthly-fee');
-        const totalInitialEl = document.getElementById('total-initial');
-        
-		// Calculate costs function
-		function calculateCosts() {
-			const shops = parseInt(shopsInput.value) || 0;
-			const terminals = parseInt(terminalsInput.value) || 0;
-			const monthlyPlan = parseFloat(planSelect.value) || 0;
-			
-			// Calculate installation fee (R2000 per shop)
-			const installationFee = PRICES.installationPerShop * shops;
-			
-			// Calculate hardware costs (per terminal)
-			const hardwarePerTerminal = PRICES.terminalPC + PRICES.till + PRICES.scanner + PRICES.printer;
-			const hardwareCost = hardwarePerTerminal * terminals * shops;
-			
-			// Calculate monthly fee
-			const monthlyFee = monthlyPlan * shops;
-			
-			// Calculate total initial cost
-			const totalInitial = installationFee + hardwareCost;
-			
-			// Update UI
-			installationFeeEl.textContent = 'R' + installationFee.toLocaleString();
-			hardwareCostEl.textContent = 'R' + hardwareCost.toLocaleString();
-			monthlyFeeEl.textContent = 'R' + monthlyFee.toLocaleString();
-			totalInitialEl.textContent = 'R' + totalInitial.toLocaleString();
-		}
-        
-        // Add event listeners
-        shopsInput.addEventListener('input', calculateCosts);
-        terminalsInput.addEventListener('input', calculateCosts);
-        planSelect.addEventListener('change', calculateCosts);
-        
-        // Initialize calculations
-        calculateCosts();
-		// Create PDF QUOTATION
+// Pricing configuration
+const PRICES = {
+    installationPerShop: 2000,
+    terminalPC: 1500,
+    till: 1000,
+    scanner: 500,
+    printer: 2000
+};
+
+// Store quotation data and PDF blob
+let currentQuotationData = null;
+let currentPdfBlob = null;
+let currentQuoteNumber = '';
+
+// DOM Elements
+const shopsInput = document.getElementById('shops');
+const terminalsInput = document.getElementById('terminals');
+const planSelect = document.getElementById('plan');
+
+// Summary elements
+const installationFeeEl = document.getElementById('installation-fee');
+const hardwareCostEl = document.getElementById('hardware-cost');
+const monthlyFeeEl = document.getElementById('monthly-fee');
+const totalInitialEl = document.getElementById('total-initial');
+
+// Calculate costs function
+function calculateCosts() {
+    const shops = parseInt(shopsInput.value) || 0;
+    const terminals = parseInt(terminalsInput.value) || 0;
+    const monthlyPlan = parseFloat(planSelect.value) || 0;
+    
+    // Calculate installation fee (R2000 per shop)
+    const installationFee = PRICES.installationPerShop * shops;
+    
+    // Calculate hardware costs (per terminal)
+    const hardwarePerTerminal = PRICES.terminalPC + PRICES.till + PRICES.scanner + PRICES.printer;
+    const hardwareCost = hardwarePerTerminal * terminals * shops;
+    
+    // Calculate monthly fee
+    const monthlyFee = monthlyPlan * shops;
+    
+    // Calculate total initial cost
+    const totalInitial = installationFee + hardwareCost;
+    
+    // Update UI
+    installationFeeEl.textContent = 'R' + installationFee.toLocaleString();
+    hardwareCostEl.textContent = 'R' + hardwareCost.toLocaleString();
+    monthlyFeeEl.textContent = 'R' + monthlyFee.toLocaleString();
+    totalInitialEl.textContent = 'R' + totalInitial.toLocaleString();
+}
+
+// Add event listeners
+shopsInput.addEventListener('input', calculateCosts);
+terminalsInput.addEventListener('input', calculateCosts);
+planSelect.addEventListener('change', calculateCosts);
+
+// Initialize calculations
+calculateCosts();
+
+// Email sending function
+async function sendQuoteEmails(formData, pdfBlob, quoteNumber) {
+    try {
+        // Convert PDF to base64 for email attachment
+        const pdfBase64 = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.readAsDataURL(pdfBlob);
+        });
+
+        // Show loading
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.style.position = 'fixed';
+        loadingIndicator.style.top = '50%';
+        loadingIndicator.style.left = '50%';
+        loadingIndicator.style.transform = 'translate(-50%, -50%)';
+        loadingIndicator.style.backgroundColor = 'rgba(0,0,0,0.8)';
+        loadingIndicator.style.color = 'white';
+        loadingIndicator.style.padding = '20px';
+        loadingIndicator.style.borderRadius = '5px';
+        loadingIndicator.style.zIndex = '1000';
+        loadingIndicator.innerHTML = '<div style="display:flex;align-items:center;"><div class="spinner"></div><span style="margin-left:15px;">Sending your quotation...</span></div>';
+        document.body.appendChild(loadingIndicator);
+
+        // Client email content
+        const clientEmailHtml = `
+            <h2>Custom Logic SA - POS System Quotation</h2>
+            <p>Dear ${formData.contact_name},</p>
+            <p>Thank you for your interest in our POS system solutions. Please find your detailed quotation attached.</p>
+            <p><strong>Quote Summary:</strong></p>
+            <ul>
+                <li>Quote Number: ${quoteNumber}</li>
+                <li>Business: ${formData.business_name}</li>
+                <li>Initial Investment: ${formData.installation_fee} + ${formData.hardware_cost}</li>
+                <li>Monthly Hosting: ${formData.monthly_fee}</li>
+            </ul>
+            <p>We're ready to help you streamline your business operations. If you have any questions about your quotation, please don't hesitate to contact us.</p>
+            <p>Best regards,<br>Custom Logic SA Team</p>
+            <p>WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za</p>
+        `;
+
+        // Internal email to quotations team
+        const internalEmailHtml = `
+            <h2>New Quote Generated - ${quoteNumber}</h2>
+            <p><strong>Client Details:</strong></p>
+            <ul>
+                <li>Business: ${formData.business_name}</li>
+                <li>Contact: ${formData.contact_name}</li>
+                <li>Email: ${formData.email}</li>
+                <li>Phone: ${formData.phone}</li>
+                <li>Location: ${formData.location}</li>
+            </ul>
+            <p><strong>Quote Summary:</strong></p>
+            <ul>
+                <li>Shops: ${formData.shops}</li>
+                <li>Terminals: ${formData.terminals}</li>
+                <li>Total Terminals: ${parseInt(formData.shops) * parseInt(formData.terminals)}</li>
+                <li>Plan: ${formData.plan}</li>
+                <li>Initial Investment: ${formData.installation_fee} + ${formData.hardware_cost}</li>
+                <li>Monthly Hosting: ${formData.monthly_fee}</li>
+            </ul>
+            ${formData.requirements ? `<p><strong>Additional Requirements:</strong><br>${formData.requirements}</p>` : ''}
+            <p>Quote generated on: ${new Date().toLocaleDateString('en-ZA')}</p>
+        `;
+
+        // Send both emails through your Cloudflare Worker
+        const response = await fetch('https://send-quote.mobius-crypt.workers.dev/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                clientEmail: {
+                    to: formData.email, // Use email from form
+                    subject: `Your Custom Logic SA Quotation - ${quoteNumber}`,
+                    html: clientEmailHtml,
+                    pdfBase64: pdfBase64
+                },
+                internalEmail: {
+                    to: 'quotations@custom-logic.co.za',
+                    subject: `New Quote Generated - ${quoteNumber} - ${formData.business_name}`,
+                    html: internalEmailHtml,
+                    pdfBase64: pdfBase64
+                },
+                quoteData: {
+                    quoteNumber,
+                    businessName: formData.business_name,
+                    contactName: formData.contact_name
+                }
+            }),
+        });
+
+        const result = await response.json();
+
+        // Remove loading
+        loadingIndicator.remove();
+
+        if (result.success) {
+            // Update success message to include email notification
+            document.getElementById('success-message').innerHTML = `
+                ✅ Quotation generated successfully!<br>
+                <span style="font-size: 0.9em; display: block; margin-top: 10px;">
+                    Your quotation has been sent to ${formData.email}. You may also download or preview it below.
+                    <br><br>
+                    <strong>Our team may contact you shortly to discuss your requirements and answer any questions.</strong>
+                </span>
+            `;
+        } else {
+            alert('Failed to send email: ' + (result.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('Error sending email: ' + error.message);
+    }
+}
+
+// Create PDF QUOTATION
 function generatePDF(formData, preview = false) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -1538,139 +1657,116 @@ function generatePDF(formData, preview = false) {
         const pdfBlob = doc.output('blob');
         const url = URL.createObjectURL(pdfBlob);
         window.open(url, '_blank');
+        return null;
     } else {
-        // Download the PDF
+        // Return the blob for emailing
+        const pdfBlob = doc.output('blob');
         doc.save(filename);
+        return pdfBlob;
     }
 }
-        // Form submission handler
-        document.getElementById('service-config').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show loading
-            document.getElementById('loading').style.display = 'flex';
-            document.querySelector('.btn').style.display = 'none';
-            
-            // Form data
-            const formData = {
-                business_name: document.getElementById('business-name').value,
-                contact_name: document.getElementById('contact-name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                location: document.getElementById('location').value,
-                shops: document.getElementById('shops').value,
-                terminals: document.getElementById('terminals').value,
-                plan: document.getElementById('plan').options[planSelect.selectedIndex].text,
-                installation_fee: installationFeeEl.textContent,
-                hardware_cost: hardwareCostEl.textContent,
-                monthly_fee: monthlyFeeEl.textContent,
-                requirements: document.getElementById('requirements').value
-            };
-            
-            // Store for PDF generation
-            currentQuotationData = formData;
-            
-            // Simulate processing time for better UX
-            setTimeout(() => {
-                // Hide loading
-                document.getElementById('loading').style.display = 'none';
-                
-                // Show success message and buttons
-                document.getElementById('success-message').style.display = 'block';
-                document.getElementById('download-pdf').style.display = 'inline-block';
-                document.getElementById('preview-pdf').style.display = 'inline-block';
-                
-                // Optional: Send to API in background
-                sendToAPI(formData);
-                
-                // Show reset button
-                const resetBtn = document.createElement('button');
-                resetBtn.textContent = '🔄 Create New Quote';
-                resetBtn.className = 'btn-secondary';
-                resetBtn.style.marginTop = '15px';
-                resetBtn.onclick = () => {
-                    document.getElementById('service-config').reset();
-                    calculateCosts();
-                    document.getElementById('success-message').style.display = 'none';
-                    document.getElementById('download-pdf').style.display = 'none';
-                    document.getElementById('preview-pdf').style.display = 'none';
-                    document.querySelector('.btn').style.display = 'inline-block';
-                    resetBtn.remove();
-                };
-                document.querySelector('.submit-container').appendChild(resetBtn);
-                
-            }, 2000);
-        });
+
+// Form submission handler
+document.getElementById('service-config').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Show loading
+    document.getElementById('loading').style.display = 'flex';
+    document.querySelector('.btn').style.display = 'none';
+    
+    // Form data
+    const formData = {
+        business_name: document.getElementById('business-name').value,
+        contact_name: document.getElementById('contact-name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        location: document.getElementById('location').value,
+        shops: document.getElementById('shops').value,
+        terminals: document.getElementById('terminals').value,
+        plan: document.getElementById('plan').options[planSelect.selectedIndex].text,
+        installation_fee: installationFeeEl.textContent,
+        hardware_cost: hardwareCostEl.textContent,
+        monthly_fee: monthlyFeeEl.textContent,
+        requirements: document.getElementById('requirements').value
+    };
+    
+    // Store for PDF generation
+    currentQuotationData = formData;
+    
+    // Generate quote number
+    currentQuoteNumber = 'CL-' + Date.now().toString().slice(-6);
+    
+    try {
+        // Generate PDF and get the blob
+        currentPdfBlob = generatePDF(formData, false);
         
-        // PDF button handlers
-        document.getElementById('download-pdf').addEventListener('click', function() {
-            if (currentQuotationData) {
-                generatePDF(currentQuotationData, false);
+        // Send emails
+        await sendQuoteEmails(formData, currentPdfBlob, currentQuoteNumber);
+        
+        // Hide loading
+        document.getElementById('loading').style.display = 'none';
+        
+        // Show success message and buttons
+        document.getElementById('success-message').style.display = 'block';
+        document.getElementById('download-pdf').style.display = 'inline-block';
+        document.getElementById('preview-pdf').style.display = 'inline-block';
+        
+        // Show reset button
+        const resetBtn = document.createElement('button');
+        resetBtn.textContent = '🔄 Create New Quote';
+        resetBtn.className = 'btn-secondary';
+        resetBtn.style.marginTop = '15px';
+        resetBtn.onclick = () => {
+            document.getElementById('service-config').reset();
+            calculateCosts();
+            document.getElementById('success-message').style.display = 'none';
+            document.getElementById('download-pdf').style.display = 'none';
+            document.getElementById('preview-pdf').style.display = 'none';
+            document.querySelector('.btn').style.display = 'inline-block';
+            resetBtn.remove();
+        };
+        document.querySelector('.submit-container').appendChild(resetBtn);
+        
+    } catch (error) {
+        document.getElementById('loading').style.display = 'none';
+        alert('Error generating quotation: ' + error.message);
+    }
+});
+
+// PDF button handlers
+document.getElementById('download-pdf').addEventListener('click', function() {
+    if (currentQuotationData) {
+        generatePDF(currentQuotationData, false);
+    }
+});
+
+document.getElementById('preview-pdf').addEventListener('click', function() {
+    if (currentQuotationData) {
+        generatePDF(currentQuotationData, true);
+    }
+});
+
+// Add some nice animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate pricing cards on scroll
+    const cards = document.querySelectorAll('.pricing-card, .hardware-card');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
             }
         });
-        
-        document.getElementById('preview-pdf').addEventListener('click', function() {
-            if (currentQuotationData) {
-                generatePDF(currentQuotationData, true);
-            }
-        });
-        
-        // API submission function (optional background process)
-        function sendToAPI(formData) {
-            const apiUrl = 'https://data-crud.custom-logic.co.za/orders';
-            
-            fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    ...formData,
-                    quote_generated: true,
-                    timestamp: new Date().toISOString()
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Quote saved to database:', data);
-            })
-            .catch(error => {
-                console.error('API Error:', error);
-                // Don't show error to user since PDF generation succeeded
-            });
-        }
-        
-        // Add some nice animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate pricing cards on scroll
-            const cards = document.querySelectorAll('.pricing-card, .hardware-card');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            });
-            
-            cards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(card);
-            });
-        });
+    });
+    
+    cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+});
     </script>
 </body>
 </html>
-
-
-
-Custom Logic SA
-Digital innovation for South African business success
-B-BBEE Level 2 | POPIA Compliant
-WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za
-Quote #: CL-922604
-Date: 2025/08/25
-V
