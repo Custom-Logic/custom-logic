@@ -22,6 +22,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             /* Updated color system to match "Custom Logic SA" look */
@@ -692,6 +693,85 @@
                 grid-template-columns: 1fr;
             }
         }
+		
+        .submit-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* PDF Button */
+        .pdf-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--success), #48bb78);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .config-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.half {
+                grid-template-columns: 1fr;
+            }
+            
+            .pdf-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: var(--success);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+		
     </style>
 </head>
 <body>
@@ -980,6 +1060,20 @@
                         <button type="submit" class="btn">Request Proposal</button>
                         <p style="margin-top: 20px; opacity: 0.8;">By submitting, you agree to our <a href="#" style="color: var(--accent);">Terms of Service</a></p>
                     </div>
+                    <div class="submit-container">
+                        <button type="submit" class="btn">Generate Quotation</button>
+                        <div class="pdf-buttons">
+                            <button type="button" id="download-pdf" class="btn-secondary" style="display: none;">📄 Download PDF Quotation</button>
+                            <button type="button" id="preview-pdf" class="btn-secondary" style="display: none;">👁️ Preview Quotation</button>
+                        </div>
+                        <div class="loading" id="loading">
+                            <div class="spinner"></div>
+                            <span style="margin-left: 15px;">Generating quotation...</span>
+                        </div>
+                        <div class="success-message" id="success-message">
+                            ✅ Quotation generated successfully! You can now download or preview your PDF.
+                        </div>
+                    </div>					
                 </form>
             </div>
         </div>
@@ -1050,7 +1144,7 @@
             </div>
         </div>
     </footer>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <script>
         // Pricing configuration
         const PRICES = {
@@ -1060,6 +1154,8 @@
             scanner: 500,
             printer: 2000
         };
+		// Add this line after the PRICES constant declaration
+		let currentQuotationData = null; // Store quotation data for PDF generation
         
         // DOM Elements
         const shopsInput = document.getElementById('shops');
@@ -1072,31 +1168,31 @@
         const monthlyFeeEl = document.getElementById('monthly-fee');
         const totalInitialEl = document.getElementById('total-initial');
         
-        // Calculate costs function
-        function calculateCosts() {
-            const shops = parseInt(shopsInput.value) || 0;
-            const terminals = parseInt(terminalsInput.value) || 0;
-            const monthlyPlan = parseFloat(planSelect.value) || 0;
-            
-            // Calculate installation fee (R2000 per shop)
-            const installationFee = PRICES.installationPerShop * shops;
-            
-            // Calculate hardware costs (per terminal)
-            const hardwarePerTerminal = PRICES.terminalPC + PRICES.till + PRICES.scanner + PRICES.printer;
-            const hardwareCost = hardwarePerTerminal * terminals * shops;
-            
-            // Calculate monthly fee
-            const monthlyFee = monthlyPlan * shops;
-            
-            // Calculate total initial cost
-            const totalInitial = installationFee + hardwareCost;
-            
-            // Update UI
-            installationFeeEl.textContent = 'R' + installationFee.toLocaleString();
-            hardwareCostEl.textContent = 'R' + hardwareCost.toLocaleString();
-            monthlyFeeEl.textContent = 'R' + monthlyFee.toLocaleString();
-            totalInitialEl.textContent = 'R' + totalInitial.toLocaleString();
-        }
+		// Calculate costs function
+		function calculateCosts() {
+			const shops = parseInt(shopsInput.value) || 0;
+			const terminals = parseInt(terminalsInput.value) || 0;
+			const monthlyPlan = parseFloat(planSelect.value) || 0;
+			
+			// Calculate installation fee (R2000 per shop)
+			const installationFee = PRICES.installationPerShop * shops;
+			
+			// Calculate hardware costs (per terminal)
+			const hardwarePerTerminal = PRICES.terminalPC + PRICES.till + PRICES.scanner + PRICES.printer;
+			const hardwareCost = hardwarePerTerminal * terminals * shops;
+			
+			// Calculate monthly fee
+			const monthlyFee = monthlyPlan * shops;
+			
+			// Calculate total initial cost
+			const totalInitial = installationFee + hardwareCost;
+			
+			// Update UI
+			installationFeeEl.textContent = 'R' + installationFee.toLocaleString();
+			hardwareCostEl.textContent = 'R' + hardwareCost.toLocaleString();
+			monthlyFeeEl.textContent = 'R' + monthlyFee.toLocaleString();
+			totalInitialEl.textContent = 'R' + totalInitial.toLocaleString();
+		}
         
         // Add event listeners
         shopsInput.addEventListener('input', calculateCosts);
@@ -1105,10 +1201,284 @@
         
         // Initialize calculations
         calculateCosts();
-        
+		// Create PDF QUOTATION
+		function generatePDF(formData, preview = false) {
+			const { jsPDF } = window.jspdf;
+			const doc = new jsPDF();
+			
+			// Colors
+			const primaryColor = [26, 54, 93];
+			const accentColor = [49, 130, 206];
+			const lightGray = [240, 240, 240];
+			
+			// Helper function to add formatted currency
+			const formatCurrency = (amount) => 'R' + parseInt(amount.replace(/[^\d]/g, '')).toLocaleString();
+			
+			// Header with company branding
+			doc.setFillColor(...primaryColor);
+			doc.rect(0, 0, 210, 40, 'F');
+			
+			doc.setTextColor(255, 255, 255);
+			doc.setFontSize(24);
+			doc.setFont(undefined, 'bold');
+			doc.text('Custom Logic SA', 20, 20);
+			
+			doc.setFontSize(12);
+			doc.setFont(undefined, 'normal');
+			doc.text('Digital innovation for South African business success', 20, 28);
+			doc.text('B-BBEE Level 2 | POPIA Compliant', 20, 35);
+			doc.setFontSize(10);
+			doc.text('WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za', 20, 42);
+			
+			// Quote number and date
+			doc.setTextColor(...primaryColor);
+			doc.setFontSize(10);
+			const quoteNumber = 'CL-' + Date.now().toString().slice(-6);
+			const currentDate = new Date().toLocaleDateString('en-ZA');
+			doc.text(`Quote #: ${quoteNumber}`, 150, 20);
+			doc.text(`Date: ${currentDate}`, 150, 26);
+			doc.text('Valid for: 30 days', 150, 32);
+			
+			// Title
+			doc.setTextColor(...accentColor);
+			doc.setFontSize(20);
+			doc.setFont(undefined, 'bold');
+			doc.text('POS SYSTEM QUOTATION', 20, 55);
+			
+			// Client details
+			doc.setFillColor(...lightGray);
+			doc.rect(20, 65, 170, 35, 'F');
+			
+			doc.setTextColor(...primaryColor);
+			doc.setFontSize(14);
+			doc.setFont(undefined, 'bold');
+			doc.text('CLIENT DETAILS', 25, 75);
+			
+			doc.setFontSize(11);
+			doc.setFont(undefined, 'normal');
+			doc.text(`Business: ${formData.business_name}`, 25, 85);
+			doc.text(`Contact: ${formData.contact_name}`, 25, 91);
+			doc.text(`Email: ${formData.email}`, 100, 85);
+			doc.text(`Phone: ${formData.phone}`, 100, 91);
+			doc.text(`Location: ${formData.location}`, 25, 97);
+			
+			// System Configuration
+			let yPos = 115;
+			doc.setFillColor(...accentColor);
+			doc.rect(20, yPos, 170, 8, 'F');
+			
+			doc.setTextColor(255, 255, 255);
+			doc.setFontSize(12);
+			doc.setFont(undefined, 'bold');
+			doc.text('SYSTEM CONFIGURATION', 25, yPos + 5);
+			
+			yPos += 15;
+			doc.setTextColor(...primaryColor);
+			doc.setFontSize(11);
+			doc.setFont(undefined, 'normal');
+			
+			doc.text(`Number of Shops/Locations: ${formData.shops}`, 25, yPos);
+			doc.text(`Terminals per Shop: ${formData.terminals}`, 25, yPos + 6);
+			doc.text(`Total Terminals: ${parseInt(formData.shops) * parseInt(formData.terminals)}`, 25, yPos + 12);
+			doc.text(`Selected Plan: ${formData.plan}`, 25, yPos + 18);
+			
+			// Cost Breakdown
+			yPos += 35;
+			doc.setFillColor(...accentColor);
+			doc.rect(20, yPos, 170, 8, 'F');
+			
+			doc.setTextColor(255, 255, 255);
+			doc.setFontSize(12);
+			doc.setFont(undefined, 'bold');
+			doc.text('COST BREAKDOWN', 25, yPos + 5);
+			
+			yPos += 15;
+			doc.setTextColor(...primaryColor);
+			doc.setFontSize(11);
+			
+			// Installation costs
+			doc.setFont(undefined, 'bold');
+			doc.text('ONE-TIME COSTS:', 25, yPos);
+			doc.setFont(undefined, 'normal');
+			yPos += 8;
+			
+			doc.text(`Installation Fee (${formData.shops} shops @ R2,000 each):`, 30, yPos);
+			doc.text(formatCurrency(formData.installation_fee), 160, yPos);
+			yPos += 6;
+			
+			const totalTerminals = parseInt(formData.shops) * parseInt(formData.terminals);
+			doc.text(`Hardware Cost (${totalTerminals} terminals @ R5,000 each):`, 30, yPos);
+			doc.text(formatCurrency(formData.hardware_cost), 160, yPos);
+			yPos += 6;
+			
+			// Hardware breakdown
+			doc.setFontSize(9);
+			doc.setTextColor(100, 100, 100);
+			doc.text('• Terminal PC (R1,500) + Till (R1,000) + Scanner (R500) + Printer (R2,000)', 35, yPos);
+			yPos += 10;
+			
+			doc.setFontSize(11);
+			doc.setTextColor(...primaryColor);
+			doc.setFont(undefined, 'bold');
+			doc.text('TOTAL ONE-TIME COST:', 30, yPos);
+			
+			// Convert to numbers before adding
+			const totalInitialCost = parseInt(formData.installation_fee.replace(/[^\d]/g, '')) + 
+									 parseInt(formData.hardware_cost.replace(/[^\d]/g, ''));
+			doc.text(formatCurrency(totalInitialCost.toString()), 160, yPos);
+			yPos += 15;
+			
+			// Monthly costs
+			doc.setFont(undefined, 'bold');
+			doc.text('MONTHLY RECURRING COSTS:', 25, yPos);
+			doc.setFont(undefined, 'normal');
+			yPos += 8;
+			
+			doc.text(`Monthly Hosting (${formData.shops} shops):`, 30, yPos);
+			doc.text(formatCurrency(formData.monthly_fee), 160, yPos);
+			yPos += 6;
+			
+			// Plan features based on selection
+			let planFeatures = [];
+			const monthlyAmount = parseInt(formData.monthly_fee.replace(/[^\d]/g, ''));
+			if (monthlyAmount <= 899) {
+				planFeatures = ['Up to 2 Terminals', '20GB Storage', 'Email & WhatsApp Support', 'Daily Backups'];
+			} else if (monthlyAmount <= 1499) {
+				planFeatures = ['Up to 5 Terminals', '50GB Storage', 'Phone & Email Support', 'Real-time Backups', 'Advanced Reporting'];
+			} else {
+				planFeatures = ['Unlimited Terminals', '100GB+ Storage', '24/7 Priority Support', 'Hourly Backups', 'Business Intelligence'];
+			}
+			
+			doc.setFontSize(9);
+			doc.setTextColor(100, 100, 100);
+			planFeatures.forEach((feature, index) => {
+				doc.text(`• ${feature}`, 35, yPos + (index * 4));
+			});
+			yPos += planFeatures.length * 4 + 8;
+			
+			// Total summary box
+			doc.setFillColor(240, 248, 255);
+			doc.rect(20, yPos, 170, 25, 'F');
+			doc.setDrawColor(...accentColor);
+			doc.setLineWidth(2);
+			doc.rect(20, yPos, 170, 25);
+			
+			doc.setTextColor(...primaryColor);
+			doc.setFontSize(14);
+			doc.setFont(undefined, 'bold');
+			const totalInitial = parseInt(formData.installation_fee.replace(/[^\d]/g, '')) + parseInt(formData.hardware_cost.replace(/[^\d]/g, ''));
+			doc.text('TOTAL INITIAL INVESTMENT:', 25, yPos + 8);
+			doc.text('R' + totalInitial.toLocaleString(), 140, yPos + 8);
+			
+			doc.setFontSize(12);
+			doc.text('Monthly Recurring Cost:', 25, yPos + 16);
+			doc.text(formatCurrency(formData.monthly_fee), 140, yPos + 16);
+			
+			yPos += 35;
+			
+			// Additional requirements if provided
+			if (formData.requirements && formData.requirements.trim()) {
+				doc.setFillColor(...lightGray);
+				doc.rect(20, yPos, 170, 20, 'F');
+				
+				doc.setTextColor(...primaryColor);
+				doc.setFontSize(12);
+				doc.setFont(undefined, 'bold');
+				doc.text('ADDITIONAL REQUIREMENTS', 25, yPos + 8);
+				
+				doc.setFontSize(10);
+				doc.setFont(undefined, 'normal');
+				const requirements = doc.splitTextToSize(formData.requirements, 160);
+				doc.text(requirements, 25, yPos + 15);
+				yPos += 20 + (requirements.length * 4);
+			}
+			
+			// Banking Details Section
+			yPos += 10;
+			doc.setFillColor(...accentColor);
+			doc.rect(20, yPos, 170, 8, 'F');
+			
+			doc.setTextColor(255, 255, 255);
+			doc.setFontSize(12);
+			doc.setFont(undefined, 'bold');
+			doc.text('BANKING DETAILS', 25, yPos + 5);
+			
+			yPos += 15;
+			doc.setTextColor(...primaryColor);
+			doc.setFontSize(11);
+			doc.setFont(undefined, 'normal');
+			
+			doc.text('Bank Name: FNB', 25, yPos);
+			doc.text('Account Type: Current', 25, yPos + 8);
+			doc.text('Account Number: 63168230563', 25, yPos + 16);
+			doc.text('Branch Code: 250655', 25, yPos + 24);
+			
+			yPos += 35;
+			
+			// Terms and conditions
+			doc.setFillColor(...accentColor);
+			doc.rect(20, yPos, 170, 8, 'F');
+			
+			doc.setTextColor(255, 255, 255);
+			doc.setFontSize(12);
+			doc.setFont(undefined, 'bold');
+			doc.text('TERMS & CONDITIONS', 25, yPos + 5);
+			
+			yPos += 15;
+			doc.setTextColor(...primaryColor);
+			doc.setFontSize(9);
+			doc.setFont(undefined, 'normal');
+			
+			const terms = [
+				'• All prices include 15% VAT',
+				'• Installation fee payable before setup begins',
+				'• Hardware costs payable on delivery',
+				'• Monthly hosting billed in advance',
+				'• Month-to-month contract with 30-day notice period',
+				'• 24/7 technical support included in monthly fee',
+				'• Quote valid for 30 days from issue date',
+				'• Payment methods: EFT, Credit Card, SnapScan'
+			];
+			
+			terms.forEach((term, index) => {
+				if (yPos + (index * 5) > 280) {
+					doc.addPage();
+					yPos = 20;
+				}
+				doc.text(term, 25, yPos + (index * 5));
+			});
+			
+			// Footer - CORRECTED CONTACT DETAILS
+			const footerY = 280;
+			doc.setFillColor(...primaryColor);
+			doc.rect(0, footerY, 210, 20, 'F');
+			
+			doc.setTextColor(255, 255, 255);
+			doc.setFontSize(10);
+			doc.text('Custom Logic SA (Pty) Ltd | Reg: 2024/853353/07', 20, footerY + 8);
+			doc.text('WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za', 20, footerY + 14);
+			
+			// Generate filename
+			const filename = `CustomLogic_POS_Quote_${formData.business_name.replace(/[^a-zA-Z0-9]/g, '_')}_${currentDate.replace(/\//g, '-')}.pdf`;
+			
+			if (preview) {
+				// Open in new window for preview
+				const pdfBlob = doc.output('blob');
+				const url = URL.createObjectURL(pdfBlob);
+				window.open(url, '_blank');
+			} else {
+				// Download the PDF
+				doc.save(filename);
+			}
+		}
+
         // Form submission handler
         document.getElementById('service-config').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'flex';
+            document.querySelector('.btn').style.display = 'none';
             
             // Form data
             const formData = {
@@ -1120,36 +1490,104 @@
                 shops: document.getElementById('shops').value,
                 terminals: document.getElementById('terminals').value,
                 plan: document.getElementById('plan').options[planSelect.selectedIndex].text,
-                installation_fee: installationFeeEl.textContent.replace('R', ''),
-                hardware_cost: hardwareCostEl.textContent.replace('R', ''),
-                monthly_fee: monthlyFeeEl.textContent.replace('R', ''),
+                installation_fee: installationFeeEl.textContent,
+                hardware_cost: hardwareCostEl.textContent,
+                monthly_fee: monthlyFeeEl.textContent,
                 requirements: document.getElementById('requirements').value
             };
             
-            // API endpoint
+            // Store for PDF generation
+            currentQuotationData = formData;
+            
+            // Simulate processing time for better UX
+            setTimeout(() => {
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                // Show success message and buttons
+                document.getElementById('success-message').style.display = 'block';
+                document.getElementById('download-pdf').style.display = 'inline-block';
+                document.getElementById('preview-pdf').style.display = 'inline-block';
+                
+                // Optional: Send to API in background
+                sendToAPI(formData);
+                
+                // Show reset button
+                const resetBtn = document.createElement('button');
+                resetBtn.textContent = '🔄 Create New Quote';
+                resetBtn.className = 'btn-secondary';
+                resetBtn.style.marginTop = '15px';
+                resetBtn.onclick = () => {
+                    document.getElementById('service-config').reset();
+                    calculateCosts();
+                    document.getElementById('success-message').style.display = 'none';
+                    document.getElementById('download-pdf').style.display = 'none';
+                    document.getElementById('preview-pdf').style.display = 'none';
+                    document.querySelector('.btn').style.display = 'inline-block';
+                    resetBtn.remove();
+                };
+                document.querySelector('.submit-container').appendChild(resetBtn);
+                
+            }, 2000);
+        });
+        
+        // PDF button handlers
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            if (currentQuotationData) {
+                generatePDF(currentQuotationData, false);
+            }
+        });
+        
+        document.getElementById('preview-pdf').addEventListener('click', function() {
+            if (currentQuotationData) {
+                generatePDF(currentQuotationData, true);
+            }
+        });
+        
+        // API submission function (optional background process)
+        function sendToAPI(formData) {
             const apiUrl = 'https://data-crud.custom-logic.co.za/orders';
             
-            // Send data to API
             fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    quote_generated: true,
+                    timestamp: new Date().toISOString()
+                })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    alert('Thank you! Your request has been submitted successfully. Our team will send your proposal within 24 hours.');
-                    document.getElementById('service-config').reset();
-                    calculateCosts();
-                } else {
-                    alert('There was an error submitting your request. Please try again or contact our support team.');
-                }
+                console.log('Quote saved to database:', data);
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error submitting your request. Please try again or contact our support team.');
+                console.error('API Error:', error);
+                // Don't show error to user since PDF generation succeeded
+            });
+        }
+        
+        // Add some nice animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate pricing cards on scroll
+            const cards = document.querySelectorAll('.pricing-card, .hardware-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
             });
         });
     </script>
