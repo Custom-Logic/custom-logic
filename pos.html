@@ -1202,275 +1202,337 @@
         // Initialize calculations
         calculateCosts();
 		// Create PDF QUOTATION
-		function generatePDF(formData, preview = false) {
-			const { jsPDF } = window.jspdf;
-			const doc = new jsPDF();
-			
-			// Colors
-			const primaryColor = [26, 54, 93];
-			const accentColor = [49, 130, 206];
-			const lightGray = [240, 240, 240];
-			
-			// Helper function to add formatted currency
-			const formatCurrency = (amount) => 'R' + parseInt(amount.replace(/[^\d]/g, '')).toLocaleString();
-			
-			// Header with company branding
-			doc.setFillColor(...primaryColor);
-			doc.rect(0, 0, 210, 40, 'F');
-			
-			doc.setTextColor(255, 255, 255);
-			doc.setFontSize(24);
-			doc.setFont(undefined, 'bold');
-			doc.text('Custom Logic SA', 20, 20);
-			
-			doc.setFontSize(12);
-			doc.setFont(undefined, 'normal');
-			doc.text('Digital innovation for South African business success', 20, 28);
-			doc.text('B-BBEE Level 2 | POPIA Compliant', 20, 35);
-			doc.setFontSize(10);
-			doc.text('WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za', 20, 42);
-			
-			// Quote number and date
-			doc.setTextColor(...primaryColor);
-			doc.setFontSize(10);
-			const quoteNumber = 'CL-' + Date.now().toString().slice(-6);
-			const currentDate = new Date().toLocaleDateString('en-ZA');
-			doc.text(`Quote #: ${quoteNumber}`, 150, 20);
-			doc.text(`Date: ${currentDate}`, 150, 26);
-			doc.text('Valid for: 30 days', 150, 32);
-			
-			// Title
-			doc.setTextColor(...accentColor);
-			doc.setFontSize(20);
-			doc.setFont(undefined, 'bold');
-			doc.text('POS SYSTEM QUOTATION', 20, 55);
-			
-			// Client details
-			doc.setFillColor(...lightGray);
-			doc.rect(20, 65, 170, 35, 'F');
-			
-			doc.setTextColor(...primaryColor);
-			doc.setFontSize(14);
-			doc.setFont(undefined, 'bold');
-			doc.text('CLIENT DETAILS', 25, 75);
-			
-			doc.setFontSize(11);
-			doc.setFont(undefined, 'normal');
-			doc.text(`Business: ${formData.business_name}`, 25, 85);
-			doc.text(`Contact: ${formData.contact_name}`, 25, 91);
-			doc.text(`Email: ${formData.email}`, 100, 85);
-			doc.text(`Phone: ${formData.phone}`, 100, 91);
-			doc.text(`Location: ${formData.location}`, 25, 97);
-			
-			// System Configuration
-			let yPos = 115;
-			doc.setFillColor(...accentColor);
-			doc.rect(20, yPos, 170, 8, 'F');
-			
-			doc.setTextColor(255, 255, 255);
-			doc.setFontSize(12);
-			doc.setFont(undefined, 'bold');
-			doc.text('SYSTEM CONFIGURATION', 25, yPos + 5);
-			
-			yPos += 15;
-			doc.setTextColor(...primaryColor);
-			doc.setFontSize(11);
-			doc.setFont(undefined, 'normal');
-			
-			doc.text(`Number of Shops/Locations: ${formData.shops}`, 25, yPos);
-			doc.text(`Terminals per Shop: ${formData.terminals}`, 25, yPos + 6);
-			doc.text(`Total Terminals: ${parseInt(formData.shops) * parseInt(formData.terminals)}`, 25, yPos + 12);
-			doc.text(`Selected Plan: ${formData.plan}`, 25, yPos + 18);
-			
-			// Cost Breakdown
-			yPos += 35;
-			doc.setFillColor(...accentColor);
-			doc.rect(20, yPos, 170, 8, 'F');
-			
-			doc.setTextColor(255, 255, 255);
-			doc.setFontSize(12);
-			doc.setFont(undefined, 'bold');
-			doc.text('COST BREAKDOWN', 25, yPos + 5);
-			
-			yPos += 15;
-			doc.setTextColor(...primaryColor);
-			doc.setFontSize(11);
-			
-			// Installation costs
-			doc.setFont(undefined, 'bold');
-			doc.text('ONE-TIME COSTS:', 25, yPos);
-			doc.setFont(undefined, 'normal');
-			yPos += 8;
-			
-			doc.text(`Installation Fee (${formData.shops} shops @ R2,000 each):`, 30, yPos);
-			doc.text(formatCurrency(formData.installation_fee), 160, yPos);
-			yPos += 6;
-			
-			const totalTerminals = parseInt(formData.shops) * parseInt(formData.terminals);
-			doc.text(`Hardware Cost (${totalTerminals} terminals @ R5,000 each):`, 30, yPos);
-			doc.text(formatCurrency(formData.hardware_cost), 160, yPos);
-			yPos += 6;
-			
-			// Hardware breakdown
-			doc.setFontSize(9);
-			doc.setTextColor(100, 100, 100);
-			doc.text('• Terminal PC (R1,500) + Till (R1,000) + Scanner (R500) + Printer (R2,000)', 35, yPos);
-			yPos += 10;
-			
-			doc.setFontSize(11);
-			doc.setTextColor(...primaryColor);
-			doc.setFont(undefined, 'bold');
-			doc.text('TOTAL ONE-TIME COST:', 30, yPos);
-			
-			// Convert to numbers before adding
-			const totalInitialCost = parseInt(formData.installation_fee.replace(/[^\d]/g, '')) + 
-									 parseInt(formData.hardware_cost.replace(/[^\d]/g, ''));
-			doc.text(formatCurrency(totalInitialCost.toString()), 160, yPos);
-			yPos += 15;
-			
-			// Monthly costs
-			doc.setFont(undefined, 'bold');
-			doc.text('MONTHLY RECURRING COSTS:', 25, yPos);
-			doc.setFont(undefined, 'normal');
-			yPos += 8;
-			
-			doc.text(`Monthly Hosting (${formData.shops} shops):`, 30, yPos);
-			doc.text(formatCurrency(formData.monthly_fee), 160, yPos);
-			yPos += 6;
-			
-			// Plan features based on selection
-			let planFeatures = [];
-			const monthlyAmount = parseInt(formData.monthly_fee.replace(/[^\d]/g, ''));
-			if (monthlyAmount <= 899) {
-				planFeatures = ['Up to 2 Terminals', '20GB Storage', 'Email & WhatsApp Support', 'Daily Backups'];
-			} else if (monthlyAmount <= 1499) {
-				planFeatures = ['Up to 5 Terminals', '50GB Storage', 'Phone & Email Support', 'Real-time Backups', 'Advanced Reporting'];
-			} else {
-				planFeatures = ['Unlimited Terminals', '100GB+ Storage', '24/7 Priority Support', 'Hourly Backups', 'Business Intelligence'];
-			}
-			
-			doc.setFontSize(9);
-			doc.setTextColor(100, 100, 100);
-			planFeatures.forEach((feature, index) => {
-				doc.text(`• ${feature}`, 35, yPos + (index * 4));
-			});
-			yPos += planFeatures.length * 4 + 8;
-			
-			// Total summary box
-			doc.setFillColor(240, 248, 255);
-			doc.rect(20, yPos, 170, 25, 'F');
-			doc.setDrawColor(...accentColor);
-			doc.setLineWidth(2);
-			doc.rect(20, yPos, 170, 25);
-			
-			doc.setTextColor(...primaryColor);
-			doc.setFontSize(14);
-			doc.setFont(undefined, 'bold');
-			const totalInitial = parseInt(formData.installation_fee.replace(/[^\d]/g, '')) + parseInt(formData.hardware_cost.replace(/[^\d]/g, ''));
-			doc.text('TOTAL INITIAL INVESTMENT:', 25, yPos + 8);
-			doc.text('R' + totalInitial.toLocaleString(), 140, yPos + 8);
-			
-			doc.setFontSize(12);
-			doc.text('Monthly Recurring Cost:', 25, yPos + 16);
-			doc.text(formatCurrency(formData.monthly_fee), 140, yPos + 16);
-			
-			yPos += 35;
-			
-			// Additional requirements if provided
-			if (formData.requirements && formData.requirements.trim()) {
-				doc.setFillColor(...lightGray);
-				doc.rect(20, yPos, 170, 20, 'F');
-				
-				doc.setTextColor(...primaryColor);
-				doc.setFontSize(12);
-				doc.setFont(undefined, 'bold');
-				doc.text('ADDITIONAL REQUIREMENTS', 25, yPos + 8);
-				
-				doc.setFontSize(10);
-				doc.setFont(undefined, 'normal');
-				const requirements = doc.splitTextToSize(formData.requirements, 160);
-				doc.text(requirements, 25, yPos + 15);
-				yPos += 20 + (requirements.length * 4);
-			}
-			
-			// Banking Details Section
-			yPos += 10;
-			doc.setFillColor(...accentColor);
-			doc.rect(20, yPos, 170, 8, 'F');
-			
-			doc.setTextColor(255, 255, 255);
-			doc.setFontSize(12);
-			doc.setFont(undefined, 'bold');
-			doc.text('BANKING DETAILS', 25, yPos + 5);
-			
-			yPos += 15;
-			doc.setTextColor(...primaryColor);
-			doc.setFontSize(11);
-			doc.setFont(undefined, 'normal');
-			
-			doc.text('Bank Name: FNB', 25, yPos);
-			doc.text('Account Type: Current', 25, yPos + 8);
-			doc.text('Account Number: 63168230563', 25, yPos + 16);
-			doc.text('Branch Code: 250655', 25, yPos + 24);
-			
-			yPos += 35;
-			
-			// Terms and conditions
-			doc.setFillColor(...accentColor);
-			doc.rect(20, yPos, 170, 8, 'F');
-			
-			doc.setTextColor(255, 255, 255);
-			doc.setFontSize(12);
-			doc.setFont(undefined, 'bold');
-			doc.text('TERMS & CONDITIONS', 25, yPos + 5);
-			
-			yPos += 15;
-			doc.setTextColor(...primaryColor);
-			doc.setFontSize(9);
-			doc.setFont(undefined, 'normal');
-			
-			const terms = [
-				'• All prices include 15% VAT',
-				'• Installation fee payable before setup begins',
-				'• Hardware costs payable on delivery',
-				'• Monthly hosting billed in advance',
-				'• Month-to-month contract with 30-day notice period',
-				'• 24/7 technical support included in monthly fee',
-				'• Quote valid for 30 days from issue date',
-				'• Payment methods: EFT, Credit Card, SnapScan'
-			];
-			
-			terms.forEach((term, index) => {
-				if (yPos + (index * 5) > 280) {
-					doc.addPage();
-					yPos = 20;
-				}
-				doc.text(term, 25, yPos + (index * 5));
-			});
-			
-			// Footer - CORRECTED CONTACT DETAILS
-			const footerY = 280;
-			doc.setFillColor(...primaryColor);
-			doc.rect(0, footerY, 210, 20, 'F');
-			
-			doc.setTextColor(255, 255, 255);
-			doc.setFontSize(10);
-			doc.text('Custom Logic SA (Pty) Ltd | Reg: 2024/853353/07', 20, footerY + 8);
-			doc.text('WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za', 20, footerY + 14);
-			
-			// Generate filename
-			const filename = `CustomLogic_POS_Quote_${formData.business_name.replace(/[^a-zA-Z0-9]/g, '_')}_${currentDate.replace(/\//g, '-')}.pdf`;
-			
-			if (preview) {
-				// Open in new window for preview
-				const pdfBlob = doc.output('blob');
-				const url = URL.createObjectURL(pdfBlob);
-				window.open(url, '_blank');
-			} else {
-				// Download the PDF
-				doc.save(filename);
-			}
-		}
+function generatePDF(formData, preview = false) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Colors
+    const primaryColor = [26, 54, 93];
+    const accentColor = [49, 130, 206];
+    const lightGray = [240, 240, 240];
+    
+    // Helper function to add formatted currency
+    const formatCurrency = (amount) => 'R' + parseInt(amount.replace(/[^\d]/g, '')).toLocaleString();
+    
+    // Header with company branding
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 40, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(24);
+    doc.setFont(undefined, 'bold');
+    doc.text('Custom Logic SA', 20, 20);
+    
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'normal');
+    doc.text('Digital innovation for South African business success', 20, 28);
+    doc.text('B-BBEE Level 2 | POPIA Compliant', 20, 35);
+    doc.setFontSize(10);
+    doc.text('WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za', 20, 42);
+    
+    // Quote number and date
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(10);
+    const quoteNumber = 'CL-' + Date.now().toString().slice(-6);
+    const currentDate = new Date().toLocaleDateString('en-ZA');
+    doc.text(`Quote #: ${quoteNumber}`, 150, 20);
+    doc.text(`Date: ${currentDate}`, 150, 26);
+    doc.text('Valid for: 30 days', 150, 32);
+    
+    // Title
+    doc.setTextColor(...accentColor);
+    doc.setFontSize(20);
+    doc.setFont(undefined, 'bold');
+    doc.text('POS SYSTEM QUOTATION', 20, 55);
+    
+    // Client details
+    doc.setFillColor(...lightGray);
+    doc.rect(20, 65, 170, 35, 'F');
+    
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(14);
+    doc.setFont(undefined, 'bold');
+    doc.text('CLIENT DETAILS', 25, 75);
+    
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    doc.text(`Business: ${formData.business_name}`, 25, 85);
+    doc.text(`Contact: ${formData.contact_name}`, 25, 91);
+    doc.text(`Email: ${formData.email}`, 100, 85);
+    doc.text(`Phone: ${formData.phone}`, 100, 91);
+    doc.text(`Location: ${formData.location}`, 25, 97);
+    
+    // System Configuration
+    let yPos = 115;
+    doc.setFillColor(...accentColor);
+    doc.rect(20, yPos, 170, 8, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'bold');
+    doc.text('SYSTEM CONFIGURATION', 25, yPos + 5);
+    
+    yPos += 15;
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    
+    doc.text(`Number of Shops/Locations: ${formData.shops}`, 25, yPos);
+    doc.text(`Terminals per Shop: ${formData.terminals}`, 25, yPos + 6);
+    doc.text(`Total Terminals: ${parseInt(formData.shops) * parseInt(formData.terminals)}`, 25, yPos + 12);
+    doc.text(`Selected Plan: ${formData.plan}`, 25, yPos + 18);
+    
+    // Cost Breakdown
+    yPos += 35;
+    doc.setFillColor(...accentColor);
+    doc.rect(20, yPos, 170, 8, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'bold');
+    doc.text('COST BREAKDOWN', 25, yPos + 5);
+    
+    yPos += 15;
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(11);
+    
+    // Installation costs
+    doc.setFont(undefined, 'bold');
+    doc.text('ONE-TIME COSTS:', 25, yPos);
+    doc.setFont(undefined, 'normal');
+    yPos += 8;
+    
+    doc.text(`Installation Fee (${formData.shops} shops @ R2,000 each):`, 30, yPos);
+    doc.text(formatCurrency(formData.installation_fee), 160, yPos);
+    yPos += 6;
+    
+    const totalTerminals = parseInt(formData.shops) * parseInt(formData.terminals);
+    doc.text(`Hardware Cost (${totalTerminals} terminals @ R5,000 each):`, 30, yPos);
+    doc.text(formatCurrency(formData.hardware_cost), 160, yPos);
+    yPos += 6;
+    
+    // Hardware breakdown
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    doc.text('• Terminal PC (R1,500) + Till (R1,000) + Scanner (R500) + Printer (R2,000)', 35, yPos);
+    yPos += 10;
+    
+    doc.setFontSize(11);
+    doc.setTextColor(...primaryColor);
+    doc.setFont(undefined, 'bold');
+    doc.text('TOTAL ONE-TIME COST:', 30, yPos);
+    
+    // Convert to numbers before adding
+    const totalInitialCost = parseInt(formData.installation_fee.replace(/[^\d]/g, '')) + 
+                             parseInt(formData.hardware_cost.replace(/[^\d]/g, ''));
+    doc.text(formatCurrency(totalInitialCost.toString()), 160, yPos);
+    yPos += 15;
+    
+    // Monthly costs
+    doc.setFont(undefined, 'bold');
+    doc.text('MONTHLY RECURRING COSTS:', 25, yPos);
+    doc.setFont(undefined, 'normal');
+    yPos += 8;
+    
+    doc.text(`Monthly Hosting (${formData.shops} shops):`, 30, yPos);
+    doc.text(formatCurrency(formData.monthly_fee), 160, yPos);
+    yPos += 6;
+    
+    // Plan features based on selection
+    let planFeatures = [];
+    const monthlyAmount = parseInt(formData.monthly_fee.replace(/[^\d]/g, ''));
+    if (monthlyAmount <= 899) {
+        planFeatures = ['Up to 2 Terminals', '20GB Storage', 'Email & WhatsApp Support', 'Daily Backups'];
+    } else if (monthlyAmount <= 1499) {
+        planFeatures = ['Up to 5 Terminals', '50GB Storage', 'Phone & Email Support', 'Real-time Backups', 'Advanced Reporting'];
+    } else {
+        planFeatures = ['Unlimited Terminals', '100GB+ Storage', '24/7 Priority Support', 'Hourly Backups', 'Business Intelligence'];
+    }
+    
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    planFeatures.forEach((feature, index) => {
+        doc.text(`• ${feature}`, 35, yPos + (index * 4));
+    });
+    yPos += planFeatures.length * 4 + 8;
+    
+    // Total summary box
+    doc.setFillColor(240, 248, 255);
+    doc.rect(20, yPos, 170, 25, 'F');
+    doc.setDrawColor(...accentColor);
+    doc.setLineWidth(2);
+    doc.rect(20, yPos, 170, 25);
+    
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(14);
+    doc.setFont(undefined, 'bold');
+    const totalInitial = parseInt(formData.installation_fee.replace(/[^\d]/g, '')) + parseInt(formData.hardware_cost.replace(/[^\d]/g, ''));
+    doc.text('TOTAL INITIAL INVESTMENT:', 25, yPos + 8);
+    doc.text('R' + totalInitial.toLocaleString(), 140, yPos + 8);
+    
+    doc.setFontSize(12);
+    doc.text('Monthly Recurring Cost:', 25, yPos + 16);
+    doc.text(formatCurrency(formData.monthly_fee), 140, yPos + 16);
+    
+    yPos += 35;
+    
+    // Additional requirements if provided
+    if (formData.requirements && formData.requirements.trim()) {
+        doc.setFillColor(...lightGray);
+        doc.rect(20, yPos, 170, 20, 'F');
+        
+        doc.setTextColor(...primaryColor);
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'bold');
+        doc.text('ADDITIONAL REQUIREMENTS', 25, yPos + 8);
+        
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        const requirements = doc.splitTextToSize(formData.requirements, 160);
+        doc.text(requirements, 25, yPos + 15);
+        yPos += 20 + (requirements.length * 4);
+    }
+    
+    // Terms and conditions
+    yPos += 10;
+    doc.setFillColor(...accentColor);
+    doc.rect(20, yPos, 170, 8, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'bold');
+    doc.text('TERMS & CONDITIONS', 25, yPos + 5);
+    
+    yPos += 15;
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    
+    const terms = [
+        '• All prices include 15% VAT',
+        '• Installation fee payable before setup begins',
+        '• Hardware costs payable on delivery',
+        '• Monthly hosting billed in advance',
+        '• Month-to-month contract with 30-day notice period',
+        '• 24/7 technical support included in monthly fee',
+        '• Quote valid for 30 days from issue date',
+        '• Payment methods: EFT, Credit Card, SnapScan'
+    ];
+    
+    terms.forEach((term, index) => {
+        if (yPos + (index * 5) > 280) {
+            doc.addPage();
+            yPos = 20;
+        }
+        doc.text(term, 25, yPos + (index * 5));
+    });
+    
+    // Add a new page for quote details and banking information
+    doc.addPage();
+    let secondPageY = 20;
+    
+    // Quote Details on Second Page
+    doc.setFillColor(...accentColor);
+    doc.rect(20, secondPageY, 170, 8, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'bold');
+    doc.text('QUOTE DETAILS', 25, secondPageY + 5);
+    
+    secondPageY += 15;
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    
+    doc.text(`Quote Number: ${quoteNumber}`, 25, secondPageY);
+    doc.text(`Date Issued: ${currentDate}`, 25, secondPageY + 8);
+    doc.text(`Valid Until: ${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-ZA')}`, 25, secondPageY + 16);
+    doc.text(`Prepared For: ${formData.business_name}`, 25, secondPageY + 24);
+    doc.text(`Contact Person: ${formData.contact_name}`, 25, secondPageY + 32);
+    
+    secondPageY += 50;
+    
+    // Banking Details on Second Page
+    doc.setFillColor(...accentColor);
+    doc.rect(20, secondPageY, 170, 8, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'bold');
+    doc.text('BANKING DETAILS', 25, secondPageY + 5);
+    
+    secondPageY += 15;
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    
+    doc.text('Bank Name: FNB', 25, secondPageY);
+    doc.text('Account Type: Current', 25, secondPageY + 8);
+    doc.text('Account Number: 63168230563', 25, secondPageY + 16);
+    doc.text('Branch Code: 250655', 25, secondPageY + 24);
+    doc.text('Reference: Please use Quote # as reference', 25, secondPageY + 32);
+    
+    secondPageY += 45;
+    
+    // Payment Instructions
+    doc.setFillColor(...accentColor);
+    doc.rect(20, secondPageY, 170, 8, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'bold');
+    doc.text('PAYMENT INSTRUCTIONS', 25, secondPageY + 5);
+    
+    secondPageY += 15;
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(10);
+    doc.setFont(undefined, 'normal');
+    
+    const instructions = [
+        '1. EFT payments should be made to the bank account details above',
+        '2. Please use your Quote Number as the payment reference',
+        '3. Email proof of payment to sales@custom-logic.co.za',
+        '4. Installation will commence once payment is confirmed',
+        '5. For alternative payment methods, contact us on WhatsApp'
+    ];
+    
+    instructions.forEach((instruction, index) => {
+        doc.text(instruction, 25, secondPageY + (index * 6));
+    });
+    
+    // Footer on all pages
+    const addFooter = (pageNum) => {
+        const footerY = 280;
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, footerY, 210, 20, 'F');
+        
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(10);
+        doc.text('Custom Logic SA (Pty) Ltd | Reg: 2024/853353/07', 20, footerY + 8);
+        doc.text(`WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za | Page ${pageNum}`, 20, footerY + 14);
+    };
+    
+    // Add footer to all pages
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        addFooter(i);
+    }
+    
+    // Generate filename
+    const filename = `CustomLogic_POS_Quote_${formData.business_name.replace(/[^a-zA-Z0-9]/g, '_')}_${currentDate.replace(/\//g, '-')}.pdf`;
+    
+    if (preview) {
+        // Open in new window for preview
+        const pdfBlob = doc.output('blob');
+        const url = URL.createObjectURL(pdfBlob);
+        window.open(url, '_blank');
+    } else {
+        // Download the PDF
+        doc.save(filename);
+    }
+}
 
         // Form submission handler
         document.getElementById('service-config').addEventListener('submit', function(e) {
