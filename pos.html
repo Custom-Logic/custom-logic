@@ -1393,41 +1393,7 @@ function generatePDF(formData, preview = false) {
         yPos += 20 + (requirements.length * 4);
     }
     
-    // Terms and conditions
-    yPos += 10;
-    doc.setFillColor(...accentColor);
-    doc.rect(20, yPos, 170, 8, 'F');
-    
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(12);
-    doc.setFont(undefined, 'bold');
-    doc.text('TERMS & CONDITIONS', 25, yPos + 5);
-    
-    yPos += 15;
-    doc.setTextColor(...primaryColor);
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'normal');
-    
-    const terms = [
-        '• All prices include 15% VAT',
-        '• Installation fee payable before setup begins',
-        '• Hardware costs payable on delivery',
-        '• Monthly hosting billed in advance',
-        '• Month-to-month contract with 30-day notice period',
-        '• 24/7 technical support included in monthly fee',
-        '• Quote valid for 30 days from issue date',
-        '• Payment methods: EFT, Credit Card, SnapScan'
-    ];
-    
-    terms.forEach((term, index) => {
-        if (yPos + (index * 5) > 280) {
-            doc.addPage();
-            yPos = 20;
-        }
-        doc.text(term, 25, yPos + (index * 5));
-    });
-    
-    // Add a new page for quote details and banking information
+    // Add a new page for quote details, banking information, and terms
     doc.addPage();
     let secondPageY = 20;
     
@@ -1501,6 +1467,50 @@ function generatePDF(formData, preview = false) {
         doc.text(instruction, 25, secondPageY + (index * 6));
     });
     
+    secondPageY += instructions.length * 6 + 15;
+    
+    // Terms and conditions - Now placed after Payment Instructions
+    if (secondPageY > 250) {
+        doc.addPage();
+        secondPageY = 20;
+    }
+    
+    doc.setFillColor(...accentColor);
+    doc.rect(20, secondPageY, 170, 8, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont(undefined, 'bold');
+    doc.text('TERMS & CONDITIONS', 25, secondPageY + 5);
+    
+    secondPageY += 15;
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(9);
+    doc.setFont(undefined, 'normal');
+    
+    const terms = [
+        '• All prices include 15% VAT',
+        '• Installation fee payable before setup begins',
+        '• Hardware costs payable on delivery',
+        '• Monthly hosting billed in advance',
+        '• Month-to-month contract with 30-day notice period',
+        '• 24/7 technical support included in monthly fee',
+        '• Quote valid for 30 days from issue date',
+        '• Payment methods: EFT, Credit Card, SnapScan',
+        '• Custom Logic SA reserves the right to modify pricing with 30 days notice',
+        '• Service level agreement available upon request',
+        '• Setup timeline: 5-7 business days after payment confirmation',
+        '• Training included for up to 2 staff members per location'
+    ];
+    
+    terms.forEach((term, index) => {
+        if (secondPageY + (index * 5) > 280) {
+            doc.addPage();
+            secondPageY = 20;
+        }
+        doc.text(term, 25, secondPageY + (index * 5));
+    });
+    
     // Footer on all pages
     const addFooter = (pageNum) => {
         const footerY = 280;
@@ -1533,7 +1543,6 @@ function generatePDF(formData, preview = false) {
         doc.save(filename);
     }
 }
-
         // Form submission handler
         document.getElementById('service-config').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1655,3 +1664,13 @@ function generatePDF(formData, preview = false) {
     </script>
 </body>
 </html>
+
+
+
+Custom Logic SA
+Digital innovation for South African business success
+B-BBEE Level 2 | POPIA Compliant
+WhatsApp: 076 825 5575 | Email: sales@custom-logic.co.za
+Quote #: CL-922604
+Date: 2025/08/25
+V
