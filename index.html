@@ -237,6 +237,170 @@
             color: var(--primary);
             font-size: 1.1rem;
         }
+/* Tenders SA Feature Section */
+.tenders-showcase {
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tenders-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.tenders-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(30, 64, 175, 0.1);
+    color: var(--primary);
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(30, 64, 175, 0.2);
+}
+
+.tenders-content h2 {
+    font-size: clamp(2rem, 3vw, 3rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+}
+
+.tenders-content h2 span {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.tenders-content p {
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 2rem;
+    max-width: 500px;
+}
+
+.tenders-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.tenders-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.btn-tenders-primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+}
+
+.btn-tenders-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+}
+
+.btn-tenders-outline {
+    background: white;
+    color: var(--dark);
+    border: 1px solid #e2e8f0;
+}
+
+.btn-tenders-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: #f8fafc;
+}
+
+/* Visual Mockup on the right */
+.tenders-visual {
+    position: relative;
+    padding: 2rem;
+}
+
+.tenders-card-mockup {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.8);
+    position: relative;
+    z-index: 2;
+    transform: rotate(-2deg);
+    transition: transform 0.3s ease;
+}
+
+.tenders-card-mockup:hover {
+    transform: rotate(0deg);
+}
+
+.mock-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.mock-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #e0e7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.mock-text {
+    flex: 1;
+}
+
+.mock-line {
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.mock-line.short { width: 60%; }
+
+@media (max-width: 968px) {
+    .tenders-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 3rem;
+    }
+    .tenders-content p, .tenders-badge {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .tenders-card-mockup {
+        transform: rotate(0deg);
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
 
         /* Services Section */
         .services {
@@ -1875,7 +2039,79 @@ body.mobile-menu-open {
             </div>
         </div>
     </section>
+<section class="tenders-showcase">
+        <div class="tenders-container">
+            <div class="tenders-content">
+                <div class="tenders-badge">Featured Platform</div>
+                <h2>Tenders SA <br><span>Intelligent Bidding</span></h2>
+                <p>
+                    More than just a database. Tenders SA is a complete tender management solution for South African businesses. We aggregate, analyze, and deliver government tender opportunities directly to your dashboard.
+                </p>
+                
+                <ul class="feature-list" style="margin-bottom: 2rem; display: inline-block; text-align: left;">
+                    <li>Automated daily email notifications</li>
+                    <li>Advanced document analysis & keywords</li>
+                    <li>SME-focused pricing structures</li>
+                </ul>
 
+                <div class="tenders-links-grid">
+                    <a href="https://www.tenders-sa.org/register" class="tenders-btn btn-tenders-primary">
+                        Register Free <i class="fas fa-arrow-right" style="margin-left: 5px;"></i>
+                    </a>
+                    <a href="https://www.tenders-sa.org" class="tenders-btn btn-tenders-outline">
+                        Visit Site
+                    </a>
+                    <a href="https://www.tenders-sa.org/features" class="tenders-btn btn-tenders-outline">
+                        Features
+                    </a>
+                    <a href="https://www.tenders-sa.org/pricing" class="tenders-btn btn-tenders-outline">
+                        Pricing
+                    </a>
+                    <a href="https://www.tenders-sa.org/blog" class="tenders-btn btn-tenders-outline">
+                        Read Blog
+                    </a>
+                </div>
+            </div>
+
+            <div class="tenders-visual">
+                <div class="tenders-card-mockup">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem;">
+                        <span style="font-weight:800; color:var(--dark);">Recent Matches</span>
+                        <span style="color:var(--secondary); font-size:0.9rem;">● Live</span>
+                    </div>
+                    
+                    <div class="mock-row">
+                        <div class="mock-icon"><i class="fas fa-building"></i></div>
+                        <div class="mock-text">
+                            <div style="font-weight:600; color:#334155; font-size:0.9rem;">ICT Infrastructure Upgrade</div>
+                            <div style="font-size:0.8rem; color:#94a3b8;">Dept of Public Works • GP</div>
+                        </div>
+                        <div style="color:var(--secondary); font-size:0.8rem; font-weight:600;">98% Match</div>
+                    </div>
+
+                    <div class="mock-row">
+                        <div class="mock-icon"><i class="fas fa-network-wired"></i></div>
+                        <div class="mock-text">
+                            <div style="font-weight:600; color:#334155; font-size:0.9rem;">Network Security Audit</div>
+                            <div style="font-size:0.8rem; color:#94a3b8;">Municipality • KZN</div>
+                        </div>
+                        <div style="color:var(--secondary); font-size:0.8rem; font-weight:600;">92% Match</div>
+                    </div>
+
+                    <div class="mock-row" style="border:none;">
+                        <div class="mock-icon"><i class="fas fa-laptop-code"></i></div>
+                        <div class="mock-text">
+                            <div style="font-weight:600; color:#334155; font-size:0.9rem;">Software Development</div>
+                            <div style="font-size:0.8rem; color:#94a3b8;">State Owned Entity • WC</div>
+                        </div>
+                        <div style="color:var(--secondary); font-size:0.8rem; font-weight:600;">88% Match</div>
+                    </div>
+                </div>
+                
+                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:120%; height:120%; background:radial-gradient(circle, rgba(100, 116, 139, 0.1) 0%, rgba(255,255,255,0) 70%); z-index:1; pointer-events:none;"></div>
+            </div>
+        </div>
+    </section>
     <section id="services" class="services">
         <div class="section-header">
             <h2 class="section-title">Our Digital Solutions</h2>
